@@ -1,0 +1,29 @@
+ <ion-view view-title="Departures">
+    <div class="bar bar-subheader item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input id="station" type="search" placeholder="Search" ng-model="station" ng-change="search()" />
+      </label>
+
+      <button class="button button-clear" ng-if="search.length" ng-click="clearSearch()">
+        <i class="ion-backspace-outline"></i>
+      </button>
+    </div>
+
+    <ion-content class="has-header has-subheader">
+      <ion-list>
+        <ion-item class="" ng-repeat="suggestion in suggestions" type="item-text-wrap">
+          {{ suggestion }}
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <div class="item item-divider">Departures</div>
+        <ion-item class="" ng-repeat="departure in departures" type="item-text-wrap">
+          {{ departure }}
+        </ion-item>
+      </ion-list>
+
+    </ion-content>
+
+</ion-view>

@@ -1,6 +1,16 @@
-angular.module('starter.controllers', [])
+angular.module('vgn.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DeparturesCtrl', function($scope, $resource, Suggestion) {
+  $scope.search = null;
+  $scope.suggestions = ['aaa', 'aba', 'aab']
+  $scope.departures = ['Maxfeld', 'Hauptbahnhof', 'Plärrer']
+
+  $scope.search = function() {
+      Suggestion.query({ station: $scope.station}, function(suggestions) {
+        $scope.suggestions =  employees
+      });
+  }
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   $scope.chats = Chats.all();
@@ -18,3 +28,5 @@ angular.module('starter.controllers', [])
     enableFriends: true
   };
 });
+
+
