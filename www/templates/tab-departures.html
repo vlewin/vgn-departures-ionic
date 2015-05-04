@@ -1,27 +1,48 @@
 <ion-view view-title="VGN departures">
-  <ion-header-bar class="bar-positive">
-    <h1 class="title">{{myTitle}}</h1>
-  </ion-header-bar>
+
+  <!-- <ion-header-bar class="bar-subheader item-input-inset">
+      <div class="button-bar">
+          <a class="button" ng-class="{'button-positive': isActive('breakfast')}" ng-click="setActive('breakfast')">Breakfast</a>
+          <a class="button" ng-class="{'button-positive': isActive('lunch')}" ng-click="setActive('lunch')">Lunch</a>
+          <a class="button" ng-class="{'button-positive': isActive('dinner')}" ng-click="setActive('dinner')">Dinner</a>
+      </div>
+  </div> -->
+
   <ion-header-bar class="bar-subheader item-input-inset">
     <label class="item-input-wrapper">
-      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <i class="icon ion-search placeholder-icon"></i>
       <input type="search" placeholder="Search" ng-change="search()" ng-model="station">
     </label>
     <button class="button button-clear">
       Cancel
     </button>
   </ion-header-bar>
+
   <ion-content>
     <div class="list">
       <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">{{suggestion.name}}</li>
     </div>
 
-    <div class="item item-divider">
-      Departures
+    <!-- <ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner> -->
+
+    <div class="item item-divider" ng-if="departures">
+      {{ clock }} Departures
     </div>
 
     <div class="list">
-      <li class="item" ng-repeat="departure in departures">{{departure.time()}}{{departure.transport}}</li>
+      <li class="item item-avatar" ng-repeat="departure in departures">
+        <!-- <img class="square {{ departure.transport }}" ng-src="img/{{departure.transport}}.png"> -->
+        <span class="item-transport {{departure.transport}} {{departure.line}}">{{departure.line}}</span>
+        <h2>
+          {{ departure.direction }}
+        </h2>
+        <p>
+          <i class="icon ion-clock"></i>
+          {{ departure.time() }}
+          ({{ departure.delay }})
+        </p>
+        <span class="badge badge-assertive">{{ departure.time_left() }}</span>
+      </li>
     </div>
 
   </ion-content>

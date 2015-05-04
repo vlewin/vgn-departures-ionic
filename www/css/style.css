@@ -1,1 +1,59 @@
 /* Empty. Add your own CSS if you like */
+
+.item-avatar > img.square {
+  border-radius: 0;
+}
+
+.item-transport {
+  color: white;
+  height: 100%;
+  left: 16px;
+  line-height: 40px;
+  max-height: 40px;
+  max-width: 40px;
+  position: absolute;
+  text-align: center;
+  top: 17px;
+  width: 100%;
+}
+
+.Stadtbus, .S-Bahn {
+  border-radius: 50%;
+}
+
+.Stadtbus {
+  background-color: #F60004;
+}
+
+.Straßenbahn {
+  background-color: #91006C;
+}
+
+.S-Bahn {
+  background-color: #4AB15C;
+}
+
+.U1 {
+  background-color: #006193;
+}
+
+.U11 {
+  background-color: #F3953E;
+}
+
+.U2 {
+  background-color: #E30613;
+}
+
+.U21 {
+  background-color: #FFD500;
+}
+
+.U3 {
+  background-color: #25B7BC
+}
+
+.spinner svg {
+  width: 19% !important;
+  height: 85px !important;
+}

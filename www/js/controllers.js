@@ -1,6 +1,30 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, Station, Departure) {
+
+// app.controller('ApplicationController', function($scope, $filter) {
+//   var updateClock = function() {
+//     $scope.clock = $filter('date')(new Date(),'HH:mm:ss');
+//   };
+//
+//   var timer = setInterval(function() {
+//     $scope.$apply(updateClock);
+//   }, 1000);
+//
+//   updateClock();
+// });
+
+.controller('DeparturesCtrl', function($scope, $resource, $filter, Station, Departure) {
+
+  // var updateClock = function() {
+  //   $scope.clock = $filter('date')(new Date(),'HH:mm:ss');
+  // };
+  //
+  // var timer = setInterval(function() {
+  //   $scope.$apply(updateClock);
+  // }, 1000);
+
+  // updateClock();
+
   $scope.search = function() {
     $scope.departures = [];
 
@@ -17,22 +41,12 @@ angular.module('vgn.controllers', [])
     $scope.station = station.name;
     $scope.suggestions = [];
 
-    Departure.query({ station: station.id }, function(departures) {
+    Departure.query({ station: station.id, limit: 10 }, function(departures) {
       $scope.departures = departures;
     });
   };
-})
 
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+  $scope.loadDepartures({ id: 's:3000331'})
 })
 
 .controller('AccountCtrl', function($scope) {
