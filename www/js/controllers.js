@@ -1,11 +1,16 @@
 angular.module('vgn.controllers', [])
 
 .controller('DeparturesCtrl', function($scope, $resource, $filter, $ionicLoading, Station, Departure) {
-  $scope.tags = [
-    { type: 'station', name: 'test' }
-  ];
+  $scope.tags = [];
+  $scope.response = null;
+  // $scope.tags = [
+  //   { type: 'station', name: 'test' }
+  // ];
 
-  $scope.suggestions = [{"name":"Nürnberg, Aufseßplatz","type":"Haltestelle","id":"s:3000534"}];
+  $scope.suggestions = [
+    {"name":"Nürnberg, Aufseßplatz","type":"Haltestelle","id":"s:3000534"},
+    {"name":"Nürnberg, Hauptbahnhof","type":"Haltestelle","id":"s:3000510"}
+  ];
 
   $scope.updateClock = function() {
     $scope.clock = $filter('date')(new Date(),'HH:mm:ss');
@@ -30,20 +35,31 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.addTag = function(tag) {
-    console.log(tag)
-    console.log($scope.tags.indexOf(tag))
-    console.log($scope.tags)
-
-
     if($scope.tags.indexOf(tag) === -1) {
       $scope.tags.push(tag);
     }
+
+    $scope.filter()
   }
 
   $scope.removeTag = function(tag) {
     var i = $scope.tags.indexOf(tag);
     if(i != -1) {
     	$scope.tags.splice(i, 1);
+    }
+
+    $scope.filter()
+  }
+
+  $scope.filter = function() {
+    $scope.departures = $scope.response;
+
+    for(i in $scope.tags) {
+      var tag = $scope.tags[i];
+      var expression = {};
+
+      expression[tag.type] = tag.name
+      $scope.departures = $filter('filter')($scope.departures, expression);
     }
   }
 
@@ -55,10 +71,9 @@ angular.module('vgn.controllers', [])
 
     $scope.station = station.name;
     $scope.suggestions = null;
-    $scope.addTag(station);
 
-    Departure.query({ station: station.id, limit: 10 }, function(departures) {
-      $scope.departures = departures;
+    Departure.query({ station: station.id, limit: 30 }, function(departures) {
+      $scope.response = $scope.departures = departures;
       $ionicLoading.hide();
     });
   };

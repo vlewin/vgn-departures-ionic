@@ -26,12 +26,12 @@
     </div>
 
     <div class="list">
-      <li class="item item-avatar" ng-repeat="departure in departures">
-        <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'transport', name: departure.transport_long})">
+      <li class="item item-avatar" ng-repeat="departure in departures | limitTo:15">
+        <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'line', name: departure.line })">
           {{departure.line}}
         </span>
         <h2>
-          <a href="#" ng-click="addTag({ type: 'direcion', name: departure.direction})">
+          <a href="#" ng-click="addTag({ type: 'direction', name: departure.direction})">
             {{ departure.direction }}
           </a>
         </h2>
