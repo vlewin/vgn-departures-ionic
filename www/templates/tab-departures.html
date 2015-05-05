@@ -8,7 +8,7 @@
       </div>
   </div> -->
 
-  <ion-header-bar class="bar-subheader item-input-inset">
+  <!-- <ion-header-bar class="bar-subheader item-input-inset">
     <label class="item-input-wrapper">
       <i class="icon ion-search placeholder-icon"></i>
       <input type="search" placeholder="Search" ng-change="search()" ng-model="station">
@@ -16,14 +16,22 @@
     <button class="button button-clear">
       Cancel
     </button>
-  </ion-header-bar>
+  </ion-header-bar> -->
 
   <ion-content>
-    <div class="list">
-      <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">{{suggestion.name}}</li>
+    <div class="item item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-model="$parent.station">
+      </label>
+      <button class="button button-small button-clear" ng-click="clearSearch()">
+        <i class="icon ion-android-cancel"></i>
+      </button>
     </div>
 
-    <!-- <ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner> -->
+    <div class="list no-margin no-padding" ng-hide="suggestions.length === 0">
+      <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">{{suggestion.name}}</li>
+    </div>
 
     <div class="item item-divider" ng-if="departures">
       {{ clock }} Departures
@@ -31,15 +39,12 @@
 
     <div class="list">
       <li class="item item-avatar" ng-repeat="departure in departures">
-        <!-- <img class="square {{ departure.transport }}" ng-src="img/{{departure.transport}}.png"> -->
         <span class="item-transport {{departure.transport}} {{departure.line}}">{{departure.line}}</span>
-        <h2>
-          {{ departure.direction }}
-        </h2>
+        <h2>{{ departure.direction }}</h2>
         <p>
           <i class="icon ion-clock"></i>
           {{ departure.time() }}
-          ({{ departure.delay }})
+          <span ng-if="departure.delay != 0">({{ departure.delay }})</span>
         </p>
         <span class="badge badge-assertive">{{ departure.time_left() }}</span>
       </li>

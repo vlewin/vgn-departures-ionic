@@ -1,4 +1,23 @@
 /* Empty. Add your own CSS if you like */
+input#search {
+  width: 100%;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.ng-hide {
+  /* this is just another form of hiding an element */
+  display: block!important;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
 
 .item-avatar > img.square {
   border-radius: 0;

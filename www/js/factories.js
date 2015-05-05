@@ -1,11 +1,12 @@
 var module = angular.module('vgn.services', [])
+var server_url = 'http://192.168.178.26:3001';
 
 module.factory('Station', function($rootScope, $resource) {
-  return $resource('http://localhost:3001/suggestions/:id');
+  return $resource(server_url + '/suggestions/:id');
 })
 
 module.factory('Departure', function($rootScope, $resource, $filter) {
-  var Departure = $resource('http://localhost:3001/departures/:id');
+  var Departure = $resource(server_url + '/departures/:id');
 
   Departure.prototype.time = function() {
     return $filter('date')(new Date(this.scheduled_time),'HH:mm');
