@@ -1,6 +1,12 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, Station, Departure) {
+.controller('DeparturesCtrl', function($scope, $resource, $filter, $ionicLoading, Station, Departure) {
+  $scope.tags = [
+    { type: 'station', name: 'test' }
+  ];
+
+  $scope.suggestions = [{"name":"Nürnberg, Aufseßplatz","type":"Haltestelle","id":"s:3000534"}];
+
   $scope.updateClock = function() {
     $scope.clock = $filter('date')(new Date(),'HH:mm:ss');
   };
@@ -23,12 +29,37 @@ angular.module('vgn.controllers', [])
     $scope.station = $scope.suggestions = $scope.departures = null;
   }
 
+  $scope.addTag = function(tag) {
+    console.log(tag)
+    console.log($scope.tags.indexOf(tag))
+    console.log($scope.tags)
+
+
+    if($scope.tags.indexOf(tag) === -1) {
+      $scope.tags.push(tag);
+    }
+  }
+
+  $scope.removeTag = function(tag) {
+    var i = $scope.tags.indexOf(tag);
+    if(i != -1) {
+    	$scope.tags.splice(i, 1);
+    }
+  }
+
   $scope.loadDepartures = function(station) {
+    $ionicLoading.show({
+      template: '<ion-spinner class="spinner spinner-assertive" icon="ripple"></ion-spinner>',
+      hideOnStageChange: false
+    });
+
     $scope.station = station.name;
     $scope.suggestions = null;
+    $scope.addTag(station);
 
     Departure.query({ station: station.id, limit: 10 }, function(departures) {
       $scope.departures = departures;
+      $ionicLoading.hide();
     });
   };
 

@@ -1,23 +1,5 @@
 <ion-view view-title="VGN departures">
 
-  <!-- <ion-header-bar class="bar-subheader item-input-inset">
-      <div class="button-bar">
-          <a class="button" ng-class="{'button-positive': isActive('breakfast')}" ng-click="setActive('breakfast')">Breakfast</a>
-          <a class="button" ng-class="{'button-positive': isActive('lunch')}" ng-click="setActive('lunch')">Lunch</a>
-          <a class="button" ng-class="{'button-positive': isActive('dinner')}" ng-click="setActive('dinner')">Dinner</a>
-      </div>
-  </div> -->
-
-  <!-- <ion-header-bar class="bar-subheader item-input-inset">
-    <label class="item-input-wrapper">
-      <i class="icon ion-search placeholder-icon"></i>
-      <input type="search" placeholder="Search" ng-change="search()" ng-model="station">
-    </label>
-    <button class="button button-clear">
-      Cancel
-    </button>
-  </ion-header-bar> -->
-
   <ion-content>
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
@@ -29,6 +11,12 @@
       </button>
     </div>
 
+    <ul class="tags">
+    	<li ng-repeat="tag in tags track by $index" ng-click="removeTag(tag)">
+        <a href="#">{{tag.name}}</a>
+      </li>
+    </ul>
+
     <div class="list no-margin no-padding" ng-hide="suggestions.length === 0">
       <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">{{suggestion.name}}</li>
     </div>
@@ -39,8 +27,14 @@
 
     <div class="list">
       <li class="item item-avatar" ng-repeat="departure in departures">
-        <span class="item-transport {{departure.transport}} {{departure.line}}">{{departure.line}}</span>
-        <h2>{{ departure.direction }}</h2>
+        <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'transport', name: departure.transport_long})">
+          {{departure.line}}
+        </span>
+        <h2>
+          <a href="#" ng-click="addTag({ type: 'direcion', name: departure.direction})">
+            {{ departure.direction }}
+          </a>
+        </h2>
         <p>
           <i class="icon ion-clock"></i>
           {{ departure.time() }}
