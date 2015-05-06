@@ -1,10 +1,10 @@
 <ion-view view-title="Favorites">
 
-  <ion-nav-buttons side="left">
+  <!-- <ion-nav-buttons side="left">
     <button class="button button-clear" ng-click="showAddChangeDialog()">
       <i class="icon ion-ios-plus-outline"></i>
     </button>
-  </ion-nav-buttons>
+  </ion-nav-buttons> -->
 
   <ion-nav-buttons side="right">
     <button class="button button-clear" ng-click="edit()">
@@ -15,15 +15,14 @@
   <ion-content class="has-header">
     <ion-list show-delete="shouldShowDelete" can-swipe="true">
       <ion-item ng-if="favorites.length == 0">
-        <span>Press <i class="icon ion-ios-plus-outline"></i> to add a favorite</span>
+        <span>Press <i class="icon ion-star"></i> to add a favorite</span>
       </ion-item>
 
       <ion-item ng-repeat="favorite in favorites" class="item-icon-left">
         <i class= "icon ion-star energized"></i>
         {{favorite.name}}
-        <p>{{favorite.id}}</p>
-        <ion-option-button class="button-assertive" ng-click="delete($index)">Delete</ion-option-button>
-        <ion-delete-button class="ion-minus-circled" ng-click="delete($index)"></ion-delete-button>
+        <ion-option-button class="button-assertive" ng-click="delete(favorite)">Delete</ion-option-button>
+        <ion-delete-button class="ion-minus-circled" ng-click="delete(favorite)"></ion-delete-button>
       </ion-item>
     </ion-list>
   </ion-content>

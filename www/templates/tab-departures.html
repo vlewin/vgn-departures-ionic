@@ -9,9 +9,13 @@
       <button class="button button-small button-clear" ng-click="clearSearch()">
         <i class="icon ion-android-cancel"></i>
       </button>
+
+      <button class="button button-small button-clear" ng-class="{ 'assertive': isFavorites(current_station) == true} " ng-click="addToFavorites(current_station)">
+        <i class="icon ion-star"></i>
+      </button>
     </div>
 
-    <ul class="tags" ng-hide="tags.length === 0">
+    <ul class="tags" ng-if="tags.length > 0">
       <li>Filters:</li>
     	<li ng-repeat="tag in tags track by $index" ng-click="removeTag(tag)">
         <a href="#">{{tag.name}}
@@ -20,8 +24,17 @@
       </li>
     </ul>
 
-    <div class="list no-margin no-padding" ng-hide="suggestions.length === 0">
-      <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">{{suggestion.name}}</li>
+    <div class="list no-margin no-padding" ng-if="suggestions">
+      <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">
+        {{suggestion.name}}
+      </li>
+    </div>
+
+    <div class="list no-margin no-padding" ng-if="favorites">
+      <li class="item" ng-repeat="favorite in favorites" ng-click="loadDepartures(favorite)">
+        <i class= "icon ion-star energized"></i>
+        {{favorite.name}}
+      </li>
     </div>
 
     <div class="item item-divider" ng-if="departures">
@@ -41,7 +54,7 @@
           </a>
         </h2>
         <p>
-          <i class="icon ion-clock " ng-class="{ assertive: departure.delay != 0} "></i>
+          <i class="icon ion-clock " ng-class="{ assertive: departure.delay != 0}"></i>
           {{ departure.time() }}
           <span ng-if="departure.delay != 0">({{ departure.delay }})</span>
         </p>
