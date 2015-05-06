@@ -26,9 +26,15 @@ angular.module('vgn.controllers', [])
   $scope.search = function() {
     $scope.departures = null;
 
-    Station.query({ station: $scope.station}, function(suggestions) {
-      $scope.suggestions =  suggestions
-    });
+    if($scope.timeout) {
+      clearTimeout($scope.timeout);
+    }
+
+    $scope.timeout = setTimeout(function() {
+      Station.query({ station: $scope.station}, function(suggestions) {
+        $scope.suggestions =  suggestions
+      });
+    }, 500);
   }
 
   $scope.clearSearch = function() {

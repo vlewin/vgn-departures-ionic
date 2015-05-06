@@ -12,8 +12,11 @@
     </div>
 
     <ul class="tags">
+      <li>Filters:</li>
     	<li ng-repeat="tag in tags track by $index" ng-click="removeTag(tag)">
-        <a href="#">{{tag.name}}</a>
+        <a href="#">{{tag.name}}
+          <i class="icon ion-close-circled"></i>
+        </a>
       </li>
     </ul>
 
@@ -31,12 +34,14 @@
           {{departure.line}}
         </span>
         <h2>
+          <i class="icon ion-ios-navigate-outline dark"></i>
+
           <a href="#" class="dark bold" ng-click="addTag({ type: 'direction', name: departure.direction})">
             {{ departure.direction }}
           </a>
         </h2>
         <p>
-          <i class="icon ion-clock"></i>
+          <i class="icon ion-clock " ng-class="{ assertive: departure.delay != 0} "></i>
           {{ departure.time() }}
           <span ng-if="departure.delay != 0">({{ departure.delay }})</span>
         </p>

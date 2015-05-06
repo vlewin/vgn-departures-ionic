@@ -33,9 +33,11 @@ input#search {
 }
 
 .tags{
-	margin: 5px;
+	/*margin: 5px 15px;*/
+  padding: 5px 15px;
 	list-style:none;
   display:block;
+  /*background-color: #EFEFEF;*/
 }
 
 .tags li, .tags a{
@@ -48,7 +50,7 @@ input#search {
 
 .tags a{
 	margin-left:20px;
-	padding:0 10px 0 12px;
+	padding:0 5px 0 12px;
 	background:#0089e0;
 	color:#fff;
 	text-decoration:none;
@@ -105,6 +107,7 @@ input#search {
   text-align: center;
   top: 17px;
   width: 100%;
+  cursor: pointer;
 }
 
 .Stadtbus, .S-Bahn {
