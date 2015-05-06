@@ -1,4 +1,4 @@
-<ion-view view-title="VGN departures">
+<ion-view view-title="VGN Nürnberg departures">
 
   <ion-content>
     <div class="item item-input-inset">
@@ -11,7 +11,7 @@
       </button>
     </div>
 
-    <ul class="tags">
+    <ul class="tags" ng-hide="tags.length === 0">
       <li>Filters:</li>
     	<li ng-repeat="tag in tags track by $index" ng-click="removeTag(tag)">
         <a href="#">{{tag.name}}
