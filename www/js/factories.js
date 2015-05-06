@@ -1,5 +1,6 @@
 var module = angular.module('vgn.services', [])
 var server_url = 'http://192.168.178.26:3001';
+var server_url = 'http://localhost:3001';
 
 module.factory('Station', function($rootScope, $resource) {
   return $resource(server_url + '/suggestions/:id');

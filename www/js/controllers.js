@@ -9,7 +9,8 @@ angular.module('vgn.controllers', [])
 
   $scope.suggestions = [
     {"name":"Nürnberg, Aufseßplatz","type":"Haltestelle","id":"s:3000534"},
-    {"name":"Nürnberg, Hauptbahnhof","type":"Haltestelle","id":"s:3000510"}
+    {"name":"Nürnberg, Nürnberg Hbf","type":"Haltestelle","id":"s:3000510"},
+    {"name":"Nürnberg, Maxfeld","type":"Haltestelle","id":"s:3000331"}
   ];
 
   $scope.updateClock = function() {
@@ -31,7 +32,7 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.clearSearch = function() {
-    $scope.station = $scope.suggestions = $scope.departures = null;
+    $scope.station = $scope.suggestions = $scope.departures = $scope.tags = null;
   }
 
   $scope.addTag = function(tag) {

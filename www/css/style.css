@@ -1,6 +1,6 @@
 /* Empty. Add your own CSS if you like */
-input#search {
-  width: 100%;
+.bold {
+  font-weight: bold;
 }
 
 .no-margin {
@@ -24,8 +24,12 @@ input#search {
   left: -9999px;
 }
 
+input#search {
+  width: 100%;
+}
+
 .tags{
-	margin: 10px;
+	margin: 5px;
 	list-style:none;
   display:block;
 }
