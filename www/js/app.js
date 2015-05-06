@@ -1,6 +1,6 @@
 angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $localStorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -11,6 +11,8 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+
+    $rootScope.api_url = $localStorage.get('api_url') || 'http://localhost:3001'
   });
 })
 
@@ -33,12 +35,12 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     }
   })
 
-  .state('tab.account', {
-    url: '/account',
+  .state('tab.settings', {
+    url: '/settings',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'tab-settings': {
+        templateUrl: 'templates/tab-settings.html',
+        controller: 'SettingsCtrl'
       }
     }
   });

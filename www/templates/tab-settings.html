@@ -1,0 +1,19 @@
+<ion-view view-title="Settings" ng-controller="SettingsCtrl">
+  <ion-content class="has-header">
+
+    <div class="list">
+      <label class="item item-input item-label" ng-class="{ 'has-error': error }">
+        <span class="input-label">API server URL</span>
+        <input type="text" placeholder="http://example.com" ng-model="$parent.api_url">
+      </label>
+      <div class="form-error" ng-if="error">{{ error.message }}</div>
+      <div class="padding">
+        <button class="button button-block button-balanced" ng-click="save()">Save</button>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>
+
+
+

@@ -36,7 +36,7 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.addTag = function(tag) {
-    if($scope.tags.indexOf(tag) === -1) {
+    if(!_.findWhere($scope.tags, tag)) {
       $scope.tags.push(tag);
     }
 
@@ -44,10 +44,7 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.removeTag = function(tag) {
-    var i = $scope.tags.indexOf(tag);
-    if(i != -1) {
-    	$scope.tags.splice(i, 1);
-    }
+    $scope.tags = _.without($scope.tags, tag);
 
     $scope.filter()
   }
@@ -83,8 +80,9 @@ angular.module('vgn.controllers', [])
   // $scope.loadDepartures({ id: 's:3000331'})
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('SettingsCtrl', function($rootScope, $scope, $localStorage) {
+  $scope.save = function() {
+    $rootScope.api_url = $scope.api_url;
+    $localStorage.set('api_url', $scope.api_url);
+  }
 });
