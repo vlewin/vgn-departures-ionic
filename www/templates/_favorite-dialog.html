@@ -1,0 +1,18 @@
+<div class="modal">
+  <div class="bar bar-header bar-dark">
+    <ion-button class="button icon-left ion-chevron-left button-clear" ng-click="leaveAddChangeDialog()">Cancel</ion-button>
+    <h1 class="title">Add item</h1>
+  </div>
+
+  <ion-content class="has-header">
+    <form name="form" ng-model="form">
+      <ion-list>
+          <li class="item item-input item-stacked-label">
+            <span class="input-label">Description</span>
+            <input type="text" placeholder="" name="description" ng-model="description" required />
+          </li>
+        <ion-button class="button button-block" ng-click="$parent.addItem(form)">Add</ion-button>
+      </ion-list>
+    </form>
+  </ion-content>
+</div>

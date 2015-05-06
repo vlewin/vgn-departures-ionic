@@ -86,6 +86,65 @@ angular.module('vgn.controllers', [])
   // $scope.loadDepartures({ id: 's:3000331'})
 })
 
+.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $ionicModal) {
+  $scope.list = [];
+
+ $scope.shouldShowDelete = false;
+ $scope.listCanSwipe = true
+
+  $ionicModal.fromTemplateUrl('templates/_favorite-dialog.html', function(modal) {
+    $scope.addDialog = modal;
+  }, {
+    scope: $scope,
+    animation: 'slide-in-up'
+  });
+
+
+  $scope.showAddChangeDialog = function() {
+    $scope.action = 'add';
+    $scope.addDialog.show();
+  };
+
+  $scope.leaveAddChangeDialog = function() {
+    // Remove dialog
+    $scope.addDialog.remove();
+    // Reload modal template to have cleared form
+    $ionicModal.fromTemplateUrl('templates/_favorite-dialog.html', function(modal) {
+      $scope.addDialog = modal;
+    }, {
+      scope: $scope,
+      animation: 'slide-in-up'
+    });
+  };
+
+
+  $scope.add = function(form) {
+    var newItem = {};
+    newItem.description = form.description.$modelValue;
+    $scope.favorites.push(newItem);
+    $scope.leaveAddChangeDialog();
+  };
+
+  $scope.edit = function() {
+    if($scope.shouldShowDelete) {
+      $scope.shouldShowDelete = false;
+    } else {
+      $scope.shouldShowDelete = true;
+    }
+  }
+
+  $scope.delete = function(favorite){
+    $scope.favorites.splice(favorite, 1)
+  }
+
+  $scope.favorites = [
+    {"name":"Nürnberg, Aufseßplatz","type":"Haltestelle","id":"s:3000534"},
+    {"name":"Nürnberg, Nürnberg Hbf","type":"Haltestelle","id":"s:3000510"},
+    {"name":"Nürnberg, Maxfeld","type":"Haltestelle","id":"s:3000331"}
+  ];
+
+})
+
 .controller('SettingsCtrl', function($rootScope, $scope, $localStorage) {
   $scope.save = function() {
     $rootScope.api_url = $scope.api_url;

@@ -1,19 +1,23 @@
-<ion-view view-title="Settings" ng-controller="SettingsCtrl">
+<ion-view view-title="Settings">
   <ion-content class="has-header">
 
-    <div class="list">
-      <label class="item item-input item-label" ng-class="{ 'has-error': error }">
-        <span class="input-label">API server URL</span>
+    <div class="list list-inset">
+      <div class="item item-divider">
+        Application settings
+      </div>
+      <label class="item item-input">
+        <span class="input-label">
+          <i class= "icon ion-link placeholder-icon"></i>
+          API server
+        </span>
+
         <input type="text" placeholder="http://example.com" ng-model="$parent.api_url">
       </label>
-      <div class="form-error" ng-if="error">{{ error.message }}</div>
-      <div class="padding">
-        <button class="button button-block button-balanced" ng-click="save()">Save</button>
-      </div>
+    </div>
+
+    <div class="padding">
+      <button class="button button-block button-balanced" ng-click="save()">Save</button>
     </div>
 
   </ion-content>
 </ion-view>
-
-
-

@@ -35,6 +35,16 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     }
   })
 
+  .state('tab.favorites', {
+    url: '/favorites',
+    views: {
+      'tab-favorites': {
+        templateUrl: 'templates/tab-favorites.html',
+        controller: 'FavoritesCtrl'
+      }
+    }
+  })
+
   .state('tab.settings', {
     url: '/settings',
     views: {
