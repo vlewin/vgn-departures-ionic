@@ -36,6 +36,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
   })
 
   .state('tab.favorites', {
+    cache: false,
     url: '/favorites',
     views: {
       'tab-favorites': {
