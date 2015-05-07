@@ -4,16 +4,21 @@
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
-        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-model="$parent.station">
-      </label>
-      <button class="button button-small button-clear" ng-click="clearSearch()">
-        <i class="icon ion-android-cancel"></i>
-      </button>
+        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name">
 
-      <button class="button button-small button-clear" ng-class="{ 'assertive': isFavorites(current_station) == true} " ng-click="addToFavorites(current_station)">
-        <i class="icon ion-star"></i>
+        <form name="search_form" ng-submit="clearSearch()">
+          <button class="button button-small button-clear" ng-click="clearSearch()">
+            <i class="icon ion-android-cancel"></i>
+          </button>
+        </form>
+
+      </label>
+
+      <button class="button button-clear no-margin" ng-class="{energized: favorite}" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
+        <i class="icon ion-star" ng-class="{energized: favorite}"></i>
       </button>
     </div>
+
 
     <ul class="tags" ng-if="tags.length > 0">
       <li>Filters:</li>

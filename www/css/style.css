@@ -8,11 +8,11 @@
 }
 
 .no-margin {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .no-padding {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .spinner svg {
@@ -30,6 +30,10 @@
 
 input#search {
   width: 100%;
+}
+
+.item-input-wrapper ~ .button-search {
+  margin-left: 0px;
 }
 
 .tags{

@@ -55,20 +55,23 @@ module.factory('Favorite', function($rootScope, $resource, $localStorage) {
 
   Favorite.remove = function(favorite) {
     var favorites = this.all();
-    console.log(favorite)
+
     favorites = _.reject(favorites, function(f){ return f.id == favorite.id });
     $localStorage.setObject('favorites', favorites)
 
-    console.log(favorites)
     return favorites;
   };
 
   Favorite.push = function(favorite) {
     var favorites = this.all();
 
-    if(!_.find(favorites, function(f){ return f.id == favorite.id})) {
-      favorites.push(favorite);
-      $localStorage.setObject('favorites', favorites)
+    if (_.isEmpty(favorite)) {
+      return;
+    } else {
+      if(!_.find(favorites, function(f){ return f.id == favorite.id})) {
+        favorites.push(favorite);
+        $localStorage.setObject('favorites', favorites)
+      }
     }
 
     return favorites;

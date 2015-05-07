@@ -1,21 +1,23 @@
 <ion-view view-title="Favorites">
-
-  <!-- <ion-nav-buttons side="left">
-    <button class="button button-clear" ng-click="showAddChangeDialog()">
-      <i class="icon ion-ios-plus-outline"></i>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" ng-if="editMode" ng-click="deleteAll()">
+      Delete all
     </button>
-  </ion-nav-buttons> -->
+  </ion-nav-buttons>
 
   <ion-nav-buttons side="right">
-    <button class="button button-clear" ng-click="edit()">
-      <i class="icon ion-compose"></i>
+    <button class="button button-clear" ng-if="favorites.length !== 0" ng-click="edit()">
+      <i class="icon ion-ios-compose-outline positive"></i>
     </button>
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <ion-list show-delete="shouldShowDelete" can-swipe="true">
+    <ion-list show-delete="editMode" can-swipe="true">
       <ion-item ng-if="favorites.length == 0">
-        <span>Press <i class="icon ion-star"></i> to add a favorite</span>
+        <div>
+          <i class="icon ion-help-circled positive"></i>
+          In order to add a station to 'Favorites', press '<i class="icon ion-star"></i>' to the right of search field
+        </div>
       </ion-item>
 
       <ion-item ng-repeat="favorite in favorites" class="item-icon-left">
