@@ -1,6 +1,6 @@
 angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
 
-.run(function($ionicPlatform, $rootScope, $localStorage) {
+.run(function($ionicPlatform, $rootScope, $localStorage, $ionicScrollDelegate) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -13,7 +13,11 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     }
 
     $rootScope.api_url = $localStorage.get('api_url') || 'http://localhost:3001'
-  });
+  })
+
+  $rootScope.scrollTop = function() {
+    $ionicScrollDelegate.scrollTop(true)
+  };
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

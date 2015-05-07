@@ -4,7 +4,7 @@
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
-        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-model="$parent.station">
+        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-model="$parent.station">
       </label>
       <button class="button button-small button-clear" ng-click="clearSearch()">
         <i class="icon ion-android-cancel"></i>
@@ -43,13 +43,13 @@
 
     <div class="list">
       <li class="item item-avatar" ng-repeat="departure in departures | limitTo:15">
-        <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'line', name: departure.line })">
+        <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'line', name: departure.line }); scrollTop()">
           {{departure.line}}
         </span>
         <h2>
           <i class="icon ion-ios-navigate-outline dark"></i>
 
-          <a href="#" class="dark bold" ng-click="addTag({ type: 'direction', name: departure.direction})">
+          <a href="#" class="dark bold" ng-click="addTag({ type: 'direction', name: departure.direction}); scrollTop()">
             {{ departure.direction }}
           </a>
         </h2>
