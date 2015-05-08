@@ -12,7 +12,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
       StatusBar.styleLightContent();
     }
 
-    $rootScope.api_url = $localStorage.get('api_url') || 'http://localhost:3001'
+    $rootScope.api_url = $localStorage.get('api_url') || 'http://vgn.herokuapp.com'
   })
 
   $rootScope.scrollTop = function() {
