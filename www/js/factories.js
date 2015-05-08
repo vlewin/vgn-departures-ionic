@@ -17,7 +17,7 @@ module.factory('$localStorage', function($window) {
   }
 });
 
-var API = 'http://vgn.herokuapp.com'
+var API = 'https://vgn.herokuapp.com'
 module.factory('Station', function($rootScope, $resource) {
   return $resource(API + '/suggestions/:id');
 })
