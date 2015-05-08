@@ -15,3 +15,6 @@ TODO:
 - [ ] Add a web app splash screen
 - [ ] Create an offline manifest
 - [ ] Add "Verbindungen" Tab
+
+https://www.airpair.com/ionic-framework/posts/production-ready-apps-with-ionic-framework
+
