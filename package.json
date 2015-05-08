@@ -15,7 +15,8 @@
     "gulp-rename": "^1.2.0",
     "cheerio": ">= 0.19.0",
     "express": "^4.12.3",
-    "forever": ">= 0.14.1"
+    "forever": ">= 0.14.1",
+    "newrelic": "^1.19.0"
   },
 
   "devDependencies": {
