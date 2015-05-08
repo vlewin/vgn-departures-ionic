@@ -1,5 +1,6 @@
 require('newrelic');
 
+var compression = require('compression');
 var express = require('express');
 var http = require('http');
 var cheerio = require("cheerio");
@@ -8,22 +9,17 @@ var portNumber = 3001;
 var app = express();
 
 
-app.use(express.static('www'));
-// app.use(express.static(__dirname));
+app.use(express.static('www'))
+app.use(compression())
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-// CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
-app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
+
+// Routing
 app.get("/", function (request, response) {
   response.sendFile(path.join(__dirname+'/views/index.html'));
 })
@@ -195,7 +191,6 @@ Array.prototype.contains = function ( needle ) {
 
 
 // http.createServer(app).listen(process.env.PORT || 3001);
-
 app.listen(process.env.PORT || 3001);
 
 console.log("Responding server listening on port "+portNumber);
