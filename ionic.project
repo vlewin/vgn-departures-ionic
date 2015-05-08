@@ -1,4 +1,9 @@
 {
   "name": "vgn-dep",
-  "app_id": "a14b2b6f"
+  "app_id": "a14b2b6f",
+  "gulpStartupTasks": [
+    "sass",
+    "templatecache",
+    "watch"
+  ]
 }

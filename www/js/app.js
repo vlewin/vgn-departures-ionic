@@ -1,4 +1,4 @@
-angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
+angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
 
 .run(function($ionicPlatform, $rootScope, $localStorage, $ionicScrollDelegate) {
   $ionicPlatform.ready(function() {
@@ -26,14 +26,14 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
   .state('tab', {
     url: "/tab",
     abstract: true,
-    templateUrl: "templates/tabs.html"
+    templateUrl: "tabs.html"
   })
 
   .state('tab.departures', {
     url: '/departures',
     views: {
       'tab-departures': {
-        templateUrl: 'templates/tab-departures.html',
+        templateUrl: 'tab-departures.html',
         controller: 'DeparturesCtrl'
       }
     }
@@ -44,7 +44,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     url: '/favorites',
     views: {
       'tab-favorites': {
-        templateUrl: 'templates/tab-favorites.html',
+        templateUrl: 'tab-favorites.html',
         controller: 'FavoritesCtrl'
       }
     }
@@ -55,7 +55,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     url: '/info',
     views: {
       'tab-info': {
-        templateUrl: 'templates/tab-info.html',
+        templateUrl: 'tab-info.html',
         controller: 'InfoCtrl'
       }
     }
@@ -65,7 +65,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     url: '/settings',
     views: {
       'tab-settings': {
-        templateUrl: 'templates/tab-settings.html',
+        templateUrl: 'tab-settings.html',
         controller: 'SettingsCtrl'
       }
     }
