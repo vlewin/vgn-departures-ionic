@@ -17,15 +17,16 @@
         <i class="icon ion-ios-information-outline"></i>
         No favorites found
         <p>In order to add a Favorite, press a 'star' icon to the right of search field</p>
+        <span class="dark">Press '<i class="icon ion-star"></i>' to add a station to 'Favorites'</span>
       </ion-item>
 
-
-      <ion-item ng-repeat="favorite in favorites" class="item-icon-left">
+      <ion-item ng-repeat="favorite in favorites" class="item-icon-left" ng-click="go(favorite)">
         <i class= "icon ion-star energized"></i>
         {{favorite.name}}
         <ion-option-button class="button-assertive" ng-click="delete(favorite)">Delete</ion-option-button>
         <ion-delete-button class="ion-minus-circled" ng-click="delete(favorite)"></ion-delete-button>
       </ion-item>
+
     </ion-list>
   </ion-content>
 

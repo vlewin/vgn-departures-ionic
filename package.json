@@ -1,7 +1,7 @@
 {
   "name": "vgn-departures",
   "version": "1.0.0",
-  "description": "vgn-departures: VGN Nürnberg live transport arrivals build with awesome Ionic framework",
+  "description": "vgn-departures: VGN Nürnberg live transport arrivals built with awesome Ionic framework",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

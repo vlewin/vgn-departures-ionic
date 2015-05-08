@@ -1,10 +1,10 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, $ionicLoading, Station, Departure, Favorite) {
+.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, Station, Departure, Favorite) {
   $scope.tags = [];
   $scope.departures_cache = null;
   $scope.favorites = Favorite.all();
-  $scope.station = {};
+  $scope.station = $state.params;
 
   $scope.updateClock = function() {
     $scope.clock = $filter('date')(new Date(),'HH:mm:ss');
@@ -81,7 +81,7 @@ angular.module('vgn.controllers', [])
 
   $scope.loadDepartures = function(station) {
     $ionicLoading.show({
-      template: '<ion-spinner class="spinner spinner-assertive" icon="ripple"></ion-spinner>',
+      template: '<ion-spinner class="spinner spinner-positive" icon="ripple"></ion-spinner>',
       hideOnStageChange: false
     });
 
@@ -96,12 +96,21 @@ angular.module('vgn.controllers', [])
   };
 
   $scope.initClock();
+
+  if($scope.station.id) {
+    $scope.loadDepartures($scope.station)
+  }
   // $scope.loadDepartures({ id: 's:3000503'})
 })
 
-.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $ionicModal, Favorite) {
+.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
+  // $scope.favorites = [{name: "AAAA", id: 1}, {name: "BBBB", id: 2}]
   $scope.favorites = Favorite.all();
   $scope.editMode = false;
+
+  $scope.go = function(station){
+    $state.go('tab.departures', { id: station.id, name: station.name }, {reload: true});
+  }
 
   $scope.edit = function() {
     if($scope.editMode) {
@@ -122,11 +131,17 @@ angular.module('vgn.controllers', [])
       Favorite.remove(favorites[i])
     }
 
+    $scope.editMode = false;
     $scope.favorites = Favorite.all()
   }
 })
 
 .controller('InfoCtrl', function($rootScope, $scope) {
+  $scope.help = function(){
+    console.log("Help")
+
+    help_popup.show(true)
+  }
 })
 
 .controller('SettingsCtrl', function($rootScope, $scope, $localStorage) {

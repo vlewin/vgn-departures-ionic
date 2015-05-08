@@ -39,8 +39,7 @@
     <script src="js/filters.js"></script>
 
     <script>
-      var ath = addToHomescreen({
-        // debug: 'android',
+      var help_popup = addToHomescreen({
         skipFirstVisit: false,      // show at first access
         startDelay: 0,              // display the message right away
         lifespan: 0,                // do not automatically kill the call out
@@ -48,7 +47,9 @@
         privateModeOverride: true,  // show the message in private mode
         maxDisplayCount: 2          // do not obey the max display count
       });
+
     </script>
+
   </head>
 
   <body ng-app="vgn">
@@ -57,7 +58,7 @@
     -->
 
     <ion-pane>
-    <ion-nav-bar class="bar bar-header">
+    <ion-nav-bar class="bar bar-header bar-positive">
       <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>

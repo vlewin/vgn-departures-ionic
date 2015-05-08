@@ -28,7 +28,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
   })
 
   .state('tab.departures', {
-    url: '/departures',
+    url: '/departures?id&name',
     views: {
       'tab-departures': {
         templateUrl: 'tab-departures.html',
