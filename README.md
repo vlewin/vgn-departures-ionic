@@ -3,6 +3,8 @@ VGN Nürnberg live transport arrivals build with awesome Ionic framework
 
 DEMO Application: http://vgn.herokuapp.com
 
+![QRCode](https://github.com/vlewin/vgn-departures-ionic/blob/master/www/img/qrcode.png)
+
 TODO:
 - [ ] Add "Pull to Refresh"
 - [ ] Monitor and remove obsolete entries (call loadMore())
