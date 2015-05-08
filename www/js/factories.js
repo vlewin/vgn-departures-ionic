@@ -17,12 +17,13 @@ module.factory('$localStorage', function($window) {
   }
 });
 
+var API = 'http://vgn.herokuapp.com'
 module.factory('Station', function($rootScope, $resource) {
-  return $resource($rootScope.api_url + '/suggestions/:id');
+  return $resource(API + '/suggestions/:id');
 })
 
 module.factory('Departure', function($rootScope, $resource, $filter) {
-  var Departure = $resource($rootScope.api_url + '/departures/:id');
+  var Departure = $resource(API + '/departures/:id');
 
   Departure.prototype.time = function() {
     return $filter('date')(new Date(this.scheduled_time),'HH:mm');

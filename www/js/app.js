@@ -11,8 +11,6 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
-
-    $rootScope.api_url = $localStorage.get('api_url') || 'http://vgn.herokuapp.com'
   })
 
   $rootScope.scrollTop = function() {
