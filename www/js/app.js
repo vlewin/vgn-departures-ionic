@@ -50,6 +50,17 @@ angular.module('vgn', ['ionic', 'ngResource', 'vgn.controllers', 'vgn.services',
     }
   })
 
+  .state('tab.info', {
+    cache: false,
+    url: '/info',
+    views: {
+      'tab-info': {
+        templateUrl: 'templates/tab-info.html',
+        controller: 'InfoCtrl'
+      }
+    }
+  })
+
   .state('tab.settings', {
     url: '/settings',
     views: {
