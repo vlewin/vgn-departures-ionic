@@ -1,4 +1,16 @@
 /* Empty. Add your own CSS if you like */
+ion-nav-view {
+  background-color: #f7fafa;
+}
+
+ion-pane:first-of-type {
+  box-shadow: 0 0 14px #636363;
+}
+ion-pane:first-of-type {
+  margin: 0 auto;
+  max-width: 960px;
+}
+
 .bold {
   font-weight: bold;
 }
