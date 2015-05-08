@@ -5,6 +5,7 @@ DEMO Application: http://vgn.herokuapp.com
 
 TODO:
 - [ ] Add "Pull to Refresh"
+- [ ] New Relic to Herokue
 - [ ] Create and add QR code to github repo
 - [ ] Replace the app icon with a custom one
 - [ ] Add a web app splash screen
