@@ -27,6 +27,25 @@ module.filter('time', function() {
   }
 })
 
+module.filter('expired', function () {
+  return function(items, now) {
+    var filtered = [];
+    console.log(items[0].time())
+    console.log(now)
+
+    for (var i = 0; i < items.length; i++) {
+      if(items[i].time() > now) {
+        filtered.push(items[i])
+      }
+    }
+
+    // for(var i in items) {
+    //
+    // }
+    return filtered
+  }
+});
+
 module.filter('minutes', function() {
   return function(timestamp) {
     var now = new Date().getTime() - 30000;

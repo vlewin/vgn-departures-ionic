@@ -42,8 +42,16 @@
       </li>
     </div>
 
-    <div class="item item-divider" ng-if="departures">
-      {{ clock }} Departures
+    <div class="item item-divider no-padding" ng-if="departures">
+      <div class="row">
+        <div class="col col-100">
+          <ion-item class="item-icon-left">
+            <i class="icon ion-ios-calendar"></i>
+            {{ date }}
+            {{ time }}
+          </ion-item>
+        </div>
+      </div>
     </div>
 
     <div class="list">
@@ -63,7 +71,9 @@
           {{ departure.time() }}
           <span ng-if="departure.delay != 0">({{ departure.delay }})</span>
         </p>
-        <span class="badge badge-assertive no-bold">{{ departure.time_left() }}</span>
+        <span class="badge {{ departure.about_to_expire ? 'badge-assertive' : 'badge-grey' }}">
+          {{ departure.time_left() }}
+        </span>
       </li>
     </div>
 

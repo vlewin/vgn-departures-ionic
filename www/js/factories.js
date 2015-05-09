@@ -17,19 +17,33 @@ module.factory('$localStorage', function($window) {
   }
 });
 
-var API = 'https://vgn.herokuapp.com'
+var API = 'http://vgn.herokuapp.com'
 module.factory('Station', function($rootScope, $resource) {
   return $resource(API + '/suggestions/:id');
 })
 
 module.factory('Departure', function($rootScope, $resource, $filter) {
   var Departure = $resource(API + '/departures/:id');
+  function Departure(data) {
+      for (attr in data) {
+          if (data.hasOwnProperty(attr)) {
+              this[attr] = data[attr];
+          }
+      }
+      this.time = $filter('date')(new Date(this.scheduled_time),'HH:mm');
+      this.expired = false;
+      this.about_to_expire = false;
+  }
 
   Departure.prototype.time = function() {
     return $filter('date')(new Date(this.scheduled_time),'HH:mm');
   };
 
   Departure.prototype.time_left = function () {
+    var now = new Date().getTime()
+    var soon = now + 300000;
+    this.expired = this.actial_time < now
+    this.about_to_expire = this.actial_time <= soon;
     return $filter('time')(this.actial_time)
   }
 
