@@ -13,11 +13,11 @@ module.filter('time', function() {
     var seconds = Math.ceil(divisor_for_seconds);
 
     if(hours >= 0 && minutes >= 0 && seconds >= 0) {
-      // hours = (hours < 10) ? '0' + hours : hours;
+      hours = (hours < 10) ? '0' + hours : hours;
       minutes = (minutes < 10) ? '0' + minutes : minutes;
       seconds = (seconds < 10) ? '0' + seconds : seconds;
     } else {
-      // hours = '00';
+      hours = '00';
       minutes = '00';
       seconds = '00';
     }

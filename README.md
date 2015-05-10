@@ -8,10 +8,10 @@ DEMO Application: http://vgn.herokuapp.com
 TODO:
 - [x] Create and add QR code to github repo (http://www.qrcode-monkey.de)
 - [x] New Relic to Heroku
+- [x] Change badge color to default(stable) for departures time left > 10 minutes
+- [x] Monitor and remove expired entries
 
 - [ ] Add "Pull to Refresh"
-- [ ] Monitor and remove obsolete entries (call loadMore())
-- [ ] Change badge color to default(stable) for departures time left > 10 minutes
 - [ ] Add a web app splash screen
 - [ ] Replace the app icon with a custom one
 - [ ] Create an offline manifest

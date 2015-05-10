@@ -87,74 +87,13 @@ angular.module('vgn.controllers', [])
       hideOnStageChange: false
     });
 
+    var nodes = ['s:3000510', 's:3001970', 's:3000704'];
+    $scope.limit = (nodes.indexOf(station.id) !== -1) ? 24 : 12;
     $scope.isFavorite(station);
     $scope.station = station;
     $scope.suggestions = $scope.favorites = null;
 
-    // // TEST
-    // var a = (new Date().getTime() + 2000);
-    // var b = (new Date().getTime() + 5000);
-    // var c = (new Date().getTime() + 305000);
-    //
-    // $scope.departures = [
-    //   {
-    //     "scheduled_time": a,
-    //     "actial_time": a,
-    //     "transport": "U-Bahn",
-    //     "transport_long": "U-Bahn U1",
-    //     "line": "U1",
-    //     "direction": "Fürth",
-    //     "delay": 0
-    //   },
-    //   {
-    //     "scheduled_time": b,
-    //     "actial_time": b,
-    //     "transport": "S-Bahn",
-    //     "transport_long": "S-Bahn S2",
-    //     "line": "S2",
-    //     "direction": "Röthenbach",
-    //     "delay": 0
-    //   },
-    //   {
-    //     "scheduled_time": c,
-    //     "actial_time": c,
-    //     "transport": "U-Bahn",
-    //     "transport_long": "U-Bahn U2",
-    //     "line": "U2",
-    //     "direction": "Röthenbach",
-    //     "delay": 0
-    //   }
-    // ]
-    //
-    // var d = []
-    // for(i in $scope.departures) {
-    //   d.push(new Departure($scope.departures[i]))
-    // }
-    //
-    // $scope.departures_cache = $scope.departures = d;
-    // $ionicLoading.hide();
-    //
-    //
-    //   $scope.$watch('departures', function (newValue, oldValue, scope) {
-    //    var valid = [];
-    //    var now = new Date().getTime();
-    //    console.log(newValue)
-    //
-    //    for(var i in newValue) {
-    //      console.log(newValue[i].actial_time > now)
-    //
-    //
-    //      if(newValue[i].actial_time > now) {
-    //        valid.push(newValue[i]);
-    //      }
-    //
-    //     $scope.departures = valid;
-    //    }
-    //   }, true);
-    //
-    // // END TEST
-
-    Departure.query({ station: station.id, limit: 50 }, function(departures) {
+    Departure.query({ station: station.id, limit: 30 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
       $ionicLoading.hide();
     });
@@ -164,7 +103,7 @@ angular.module('vgn.controllers', [])
      var now = new Date().getTime();
 
      for(var i in newValue) {
-       if(newValue[i].actial_time > now) {
+       if(newValue[i].actial_time >= now) {
          valid.push(newValue[i]);
        }
 
@@ -172,16 +111,6 @@ angular.module('vgn.controllers', [])
      }
     }, true);
   };
-
-  // for(var i in $scope.departures) {
-  //   $scope.$watch($scope.departures[i].time_left(), function(t) {
-  //     console.log(t.time_left())
-  //   });
-  // }
-
-  // $scope.$watch('myVar', function() {
-  //   alert('hey, myVar has changed!');
-  // });
 
   $scope.initClock();
 
@@ -229,7 +158,7 @@ angular.module('vgn.controllers', [])
     var platforms = ['iPhone', 'iPad', 'Android']
     var standalone = window.navigator.standalone
     var supported = _.find(platforms, function(p){ return p == window.navigator.platform; })
-    return true //(supported && !standalone)
+    return (supported && !standalone)
   }
 
   $scope.help = function(){
