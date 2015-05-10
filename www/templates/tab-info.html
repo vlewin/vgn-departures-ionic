@@ -3,7 +3,7 @@
 
     <ion-list class="list list-inset">
       <ion-item class = "item-image padding stable-bg">
-        <img src="img/qrcode.png" style="width: 55%; height: 55%">
+        <img src="img/qrcode_256.png" style="width: 55%; height: 55%">
       </ion-item>
 
       <ion-item class = "item-icon-left item-text-wrap">
@@ -12,8 +12,7 @@
         <a class="dark" href="http://ionicframework.com" target="_blank">http://ionicframework.com</a>
       </ion-item>
 
-      <ion-item class="item-icon-left item-divider">
-        <i class= "icon ion-social-rss-outline"></i>
+      <ion-item class="item-divider">
         Share with Friends
       </ion-item>
       <ion-item class="item-icon-left" class="positive" href="https://twitter.com/intent/tweet?status=VGN Departures web app (http://vgn.herokuapp.com) - built with Awesome and Powerful Ionic Framework!" target="_blank">
@@ -21,12 +20,16 @@
         <a>Tweet</a>
       </ion-item>
 
-      <ion-item class="item-icon-left item-divider">
-        <i class= "icon ion-ios-help-outline"></i>
+      <ion-item class="item-divider">
         Need Help?
       </ion-item>
-      <ion-item class="item-icon-left item-text-wrap" ng-click="help()">
-        <i class= "icon ion-ios-upload-outline positive"></i>
+      <ion-item class="item-icon-left item-text-wrap" href="https://github.com/vlewin/vgn-departures-ionic/issues" target="_blank">
+        <i class= "icon ion-social-github"></i>
+        Open a GitHub issue
+      </ion-item>
+
+      <ion-item class="item-icon-left item-text-wrap" ng-if="!standalone" ng-click="help()">
+        <i class= "icon ion-help-circled"></i>
         Show me how to pin a webapp to the home screen (supported OS: iOS >= 6, Android >= 4)
       </ion-item>
     </ion-list>

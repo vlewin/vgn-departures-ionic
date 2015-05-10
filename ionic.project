@@ -4,6 +4,8 @@
   "gulpStartupTasks": [
     "sass",
     "templatecache",
+    "js",
+    "css",
     "watch"
   ]
 }

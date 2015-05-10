@@ -154,38 +154,16 @@ angular.module('vgn.controllers', [])
     //
     // // END TEST
 
-    Departure.query({ station: station.id, limit: 30 }, function(departures) {
+    Departure.query({ station: station.id, limit: 50 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
-
-      for(var i in $scope.departures) {
-        $scope.$watch($scope.departures[i], function(t) {
-          console.log($scope.departures[i])
-        });
-      }
-
-      // $scope.$watch('departures', function (newValue, oldValue, scope) {
-      //  var valid = [];
-      //  for(var i in newValue) {
-      //    if(newValue[i].actial_time > new Date().getTime()) {
-      //      valid.push(newValue[i]);
-      //    }
-      //
-      //   $scope.departures = valid;
-      //  }
-      // }, true);
-      //
       $ionicLoading.hide();
     });
 
     $scope.$watch('departures', function (newValue, oldValue, scope) {
      var valid = [];
      var now = new Date().getTime();
-     console.log(newValue)
 
      for(var i in newValue) {
-       console.log(newValue[i].actial_time > now)
-
-
        if(newValue[i].actial_time > now) {
          valid.push(newValue[i]);
        }
@@ -247,9 +225,9 @@ angular.module('vgn.controllers', [])
 })
 
 .controller('InfoCtrl', function($rootScope, $scope) {
-  $scope.help = function(){
-    console.log("Help")
+  $scope.standalone = window.navigator.standalone;
 
+  $scope.help = function(){
     help_popup.show(true)
   }
 })
