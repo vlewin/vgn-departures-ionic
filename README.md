@@ -10,7 +10,6 @@ TODO:
 - [x] New Relic to Heroku
 - [x] Change badge color to default(stable) for departures time left > 10 minutes
 - [x] Monitor and remove expired entries
-
 - [ ] Add "Pull to Refresh"
 - [ ] Add a web app splash screen
 - [ ] Replace the app icon with a custom one
