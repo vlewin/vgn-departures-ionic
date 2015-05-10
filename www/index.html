@@ -12,28 +12,8 @@
 
     <title></title>
 
-    <!-- <link href="lib/ionic/css/ionic.css" rel="stylesheet" type="text/css"> -->
-    <!-- <link href="css/addtohomescreen.css" rel="stylesheet" type="text/css"> -->
-    <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
-
     <link rel="apple-touch-icon" href="img/icon.png"/>
-
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-    <link href="css/source.min.css" rel="stylesheet">
-
-    <script src="js/min/source.js"></script>
-    <script>
-      var help_popup = addToHomescreen({
-        skipFirstVisit: false,      // show at first access
-        startDelay: 0,              // display the message right away
-        lifespan: 0,                // do not automatically kill the call out
-        displayPace: 0,             // do not obey the display pace
-        privateModeOverride: true,  // show the message in private mode
-        maxDisplayCount: 2          // do not obey the max display count
-      });
-    </script>
+    <link href="dist/source.min.css" rel="stylesheet">
   </head>
 
   <body ng-app="vgn">
@@ -55,5 +35,17 @@
 
     </ion-nav-view>
     </ion-pane>
+
+    <script src="dist/source.js"></script>
+    <script>
+      var help_popup = addToHomescreen({
+        skipFirstVisit: false,      // show at first access
+        startDelay: 0,              // display the message right away
+        lifespan: 0,                // do not automatically kill the call out
+        displayPace: 0,             // do not obey the display pace
+        privateModeOverride: true,  // show the message in private mode
+        maxDisplayCount: 2          // do not obey the max display count
+      });
+    </script>
   </body>
 </html>

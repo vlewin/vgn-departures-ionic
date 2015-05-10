@@ -9,7 +9,7 @@ angular.module('vgn.controllers', [])
   $scope.updateClock = function() {
     $scope.time = $filter('date')(new Date(),'HH:mm');
   };
-  
+
   $scope.initClock = function() {
     $scope.date = $filter('date')(new Date(),'dd.MM.yy');
 
@@ -154,7 +154,7 @@ angular.module('vgn.controllers', [])
     //
     // // END TEST
 
-    Departure.query({ station: station.id, limit: 30 }, function(departures) {
+    Departure.query({ station: station.id, limit: 50 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
       $ionicLoading.hide();
     });
@@ -225,9 +225,9 @@ angular.module('vgn.controllers', [])
 })
 
 .controller('InfoCtrl', function($rootScope, $scope) {
-  $scope.help = function(){
-    console.log("Help")
+  $scope.standalone = window.navigator.standalone;
 
+  $scope.help = function(){
     help_popup.show(true)
   }
 })

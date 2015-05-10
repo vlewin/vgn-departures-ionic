@@ -41,8 +41,7 @@ gulp.task('templatecache', function (done) {
 gulp.task('css', function(done) {
   var source = [
     "./www/lib/ionic/css/ionic.css",
-    "./www/css/*.css",
-    '!./www/css/source.min.css'
+    "./www/css/*.css"
   ];
 
   gulp.src(source)
@@ -50,7 +49,7 @@ gulp.task('css', function(done) {
   .pipe(minifyCss({
     keepSpecialComments: 0
   }))
-  .pipe(gulp.dest('./www/css/'))
+  .pipe(gulp.dest('./www/dist/'))
   .on('end', done);
 });
 
@@ -63,7 +62,7 @@ gulp.task('js', function(done) {
 
   gulp.src(source)
   .pipe(concat('source.js'))
-  .pipe(gulp.dest('./www/js/min/'))
+  .pipe(gulp.dest('./www/dist/'))
   .on('end', done);
 });
 
