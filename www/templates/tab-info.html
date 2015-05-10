@@ -28,9 +28,9 @@
         Open a GitHub issue
       </ion-item>
 
-      <ion-item class="item-icon-left item-text-wrap" ng-if="!standalone" ng-click="help()">
+      <ion-item class="item-icon-left item-text-wrap" ng-if="supportedPlatform()" ng-click="help()">
         <i class= "icon ion-help-circled"></i>
-        Show me how to pin a webapp to the home screen (supported OS: iOS >= 6, Android >= 4)
+        Show me how to pin a webapp to the home screen (supported platforms: iOS, Android)
       </ion-item>
     </ion-list>
 

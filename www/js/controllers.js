@@ -225,7 +225,12 @@ angular.module('vgn.controllers', [])
 })
 
 .controller('InfoCtrl', function($rootScope, $scope) {
-  $scope.standalone = window.navigator.standalone;
+  $scope.supportedPlatform = function(){
+    var platforms = ['iPhone', 'iPad', 'Android']
+    var standalone = window.navigator.standalone
+    var supported = _.find(platforms, function(p){ return p == window.navigator.platform; })
+    return (supported && !standalone)
+  }
 
   $scope.help = function(){
     help_popup.show(true)
