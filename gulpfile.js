@@ -13,11 +13,7 @@ var paths = {
   templatecache: ['./www/templates/**/*.html'],
   sass: ['./scss/**/*.scss'],
   css: ['./www/css/*.css'],
-  js: [
-    "./www/lib/ionic/js/ionic.bundle.min.js",
-    "./www/lib/ionic/js/angular/angular-resource.min.js",
-    './www/js/*.js'
-  ]
+  js: ['./www/js/*.js']
 };
 
 gulp.task('default', ['templatecache', 'css', 'js']);
@@ -49,10 +45,7 @@ gulp.task('css', function(done) {
     '!./www/css/source.min.css'
   ];
 
-  gulp.src(source).pipe(tap(function (file,t) {
-    console.log(file.path);
-  }))
-
+  gulp.src(source)
   .pipe(concat('source.min.css'))
   .pipe(minifyCss({
     keepSpecialComments: 0
@@ -62,13 +55,13 @@ gulp.task('css', function(done) {
 });
 
 gulp.task('js', function(done) {
-  var source = paths.js;
+  var source =  [
+    "./www/lib/ionic/js/ionic.bundle.min.js",
+    "./www/lib/ionic/js/angular/angular-resource.min.js",
+    './www/js/*.js'
+  ]
 
-  console.log(source)
-  gulp.src(paths.js).pipe(tap(function (file,t) {
-    console.log(file.path);
-  }))
-
+  gulp.src(source)
   .pipe(concat('source.js'))
   .pipe(gulp.dest('./www/js/min/'))
   .on('end', done);
