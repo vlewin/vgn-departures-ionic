@@ -61,7 +61,7 @@ gulp.task('js', function(done) {
   ]
 
   gulp.src(source)
-  .pipe(concat('source.js'))
+  .pipe(concat('source.min.js'))
   .pipe(gulp.dest('./www/dist/'))
   .on('end', done);
 });
