@@ -7,20 +7,15 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var templateCache = require('gulp-angular-templatecache');
+var tap = require('gulp-tap');
 
 var paths = {
   sass: ['./scss/**/*.scss'],
-  templatecache: ['./www/templates/**/*.html']
+  templatecache: ['./www/templates/**/*.html'],
+  scripts: ['./www/js/*.js']
 };
 
-gulp.task('default', ['sass', 'templatecache']);
-
-gulp.task('templatecache', function (done) {
-  gulp.src('./www/templates/**/*.html')
-    .pipe(templateCache({standalone:true}))
-    .pipe(gulp.dest('./www/js'))
-    .on('end', done);
-});
+gulp.task('default', ['sass', 'templatecache', 'scripts']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -36,9 +31,34 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('templatecache', function (done) {
+  gulp.src('./www/templates/**/*.html')
+    .pipe(templateCache({standalone:true}))
+    .pipe(gulp.dest('./www/js'))
+    .on('end', done);
+});
+
+gulp.task('scripts', function(done) {
+  var source = [
+    "./www/lib/ionic/js/ionic.bundle.min.js",
+    "./www/lib/ionic/js/angular/angular-resource.min.js",
+    './www/js/*.js'
+  ];
+
+  gulp.src(source).pipe(tap(function (file,t) {
+    console.log(file.path);
+  }))
+
+  .pipe(concat('source.js'))
+  .pipe(gulp.dest('./www/js/min/'))
+  .on('end', done);
+});
+
+
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.templatecache, ['templatecache']);
+  gulp.watch(paths.scripts, ['scripts']);
 });
 
 gulp.task('install', ['git-check'], function() {

@@ -156,36 +156,14 @@ angular.module('vgn.controllers', [])
 
     Departure.query({ station: station.id, limit: 30 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
-
-      for(var i in $scope.departures) {
-        $scope.$watch($scope.departures[i], function(t) {
-          console.log($scope.departures[i])
-        });
-      }
-
-      // $scope.$watch('departures', function (newValue, oldValue, scope) {
-      //  var valid = [];
-      //  for(var i in newValue) {
-      //    if(newValue[i].actial_time > new Date().getTime()) {
-      //      valid.push(newValue[i]);
-      //    }
-      //
-      //   $scope.departures = valid;
-      //  }
-      // }, true);
-      //
       $ionicLoading.hide();
     });
 
     $scope.$watch('departures', function (newValue, oldValue, scope) {
      var valid = [];
      var now = new Date().getTime();
-     console.log(newValue)
 
      for(var i in newValue) {
-       console.log(newValue[i].actial_time > now)
-
-
        if(newValue[i].actial_time > now) {
          valid.push(newValue[i]);
        }
