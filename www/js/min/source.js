@@ -487,7 +487,7 @@ angular.module('vgn.controllers', [])
   $scope.updateClock = function() {
     $scope.time = $filter('date')(new Date(),'HH:mm');
   };
-
+  
   $scope.initClock = function() {
     $scope.date = $filter('date')(new Date(),'dd.MM.yy');
 

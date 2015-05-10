@@ -10,12 +10,17 @@ var templateCache = require('gulp-angular-templatecache');
 var tap = require('gulp-tap');
 
 var paths = {
-  sass: ['./scss/**/*.scss'],
   templatecache: ['./www/templates/**/*.html'],
-  scripts: ['./www/js/*.js']
+  sass: ['./scss/**/*.scss'],
+  css: ['./www/css/*.css'],
+  js: [
+    "./www/lib/ionic/js/ionic.bundle.min.js",
+    "./www/lib/ionic/js/angular/angular-resource.min.js",
+    './www/js/*.js'
+  ]
 };
 
-gulp.task('default', ['sass', 'templatecache', 'scripts']);
+gulp.task('default', ['templatecache', 'css', 'js']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -26,7 +31,6 @@ gulp.task('sass', function(done) {
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
@@ -38,14 +42,30 @@ gulp.task('templatecache', function (done) {
     .on('end', done);
 });
 
-gulp.task('scripts', function(done) {
+gulp.task('css', function(done) {
   var source = [
-    "./www/lib/ionic/js/ionic.bundle.min.js",
-    "./www/lib/ionic/js/angular/angular-resource.min.js",
-    './www/js/*.js'
+    "./www/lib/ionic/css/ionic.css",
+    "./www/css/*.css",
+    '!./www/css/source.min.css'
   ];
 
   gulp.src(source).pipe(tap(function (file,t) {
+    console.log(file.path);
+  }))
+
+  .pipe(concat('source.min.css'))
+  .pipe(minifyCss({
+    keepSpecialComments: 0
+  }))
+  .pipe(gulp.dest('./www/css/'))
+  .on('end', done);
+});
+
+gulp.task('js', function(done) {
+  var source = paths.js;
+
+  console.log(source)
+  gulp.src(paths.js).pipe(tap(function (file,t) {
     console.log(file.path);
   }))
 
@@ -54,11 +74,11 @@ gulp.task('scripts', function(done) {
   .on('end', done);
 });
 
-
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.templatecache, ['templatecache']);
-  gulp.watch(paths.scripts, ['scripts']);
+  gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.css, ['css']);
+  gulp.watch(paths.js, ['js']);
 });
 
 gulp.task('install', ['git-check'], function() {
