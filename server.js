@@ -8,9 +8,8 @@ var path    = require("path");
 var portNumber = 3001;
 var app = express();
 
-
-app.use(express.static('www'))
 app.use(compression())
+app.use(express.static('www'))
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -194,4 +193,3 @@ Array.prototype.contains = function ( needle ) {
 app.listen(process.env.PORT || 3001);
 
 console.log("Responding server listening on port "+portNumber);
-
