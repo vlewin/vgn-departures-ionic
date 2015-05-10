@@ -229,11 +229,11 @@ angular.module('vgn.controllers', [])
     var platforms = ['iPhone', 'iPad', 'Android']
     var standalone = window.navigator.standalone
     var supported = _.find(platforms, function(p){ return p == window.navigator.platform; })
-    return (supported && !standalone)
+    return true //(supported && !standalone)
   }
 
   $scope.help = function(){
-    help_popup.show(true)
+    $rootScope.ath_popup.show(true)
   }
 })
 

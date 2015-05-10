@@ -13,9 +13,23 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
     }
   })
 
+  $rootScope.showAddToHomePopup = function() {
+    $rootScope.ath_popup = addToHomescreen({
+      // debug: 'android',
+      skipFirstVisit: false,      // show at first access
+      startDelay: 0,              // display the message right away
+      lifespan: 0,                // do not automatically kill the call out
+      displayPace: 0,             // do not obey the display pace
+      privateModeOverride: true,  // show the message in private mode
+      maxDisplayCount: 2          // do not obey the max display count
+    });
+  }
+
   $rootScope.scrollTop = function() {
     $ionicScrollDelegate.scrollTop(true)
   };
+
+  $rootScope.showAddToHomePopup()
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
