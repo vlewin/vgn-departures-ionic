@@ -1,0 +1,39 @@
+<div class="modal">
+  <header class="bar bar-header bar-positive">
+    <h1 class="title">Station</h1>
+    <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-ios-close-outline"></span></div>
+  </header>
+
+  <ion-nav-button side="right">
+    <button class="button button-clear" ng-click="openModal()">
+      <i class="icon ion-search"></i>
+    </button>
+  </ion-nav-button>
+
+  <ion-view>
+    <ion-content class="has-header">
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-ios-search placeholder-icon"></i>
+          <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name">
+        </label>
+
+        <form name="search_form" ng-submit="clearSearch()">
+          <button class="button button-clear no-margin" ng-click="clearSearch()">
+            <i class="icon ion-android-cancel"></i>
+          </button>
+        </form>
+
+        <button class="button button-clear no-margin" ng-class="{energized: favorite}" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
+          <i class="icon ion-star" ng-class="{energized: favorite}"></i>
+        </button>
+      </div>
+
+      <div class="list no-margin no-padding" ng-if="suggestions">
+        <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">
+          {{suggestion.name}}
+        </li>
+      </div>
+    </ion-content>
+  </ion-view>
+</div>

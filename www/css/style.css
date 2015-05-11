@@ -10,11 +10,24 @@ ion-nav-view {
 ion-pane:first-of-type {
   box-shadow: 0 0 14px #636363;
 }
+
 ion-pane:first-of-type {
   margin: 0 auto;
   max-width: 960px;
 }
 
+.modal {
+  left: 0;
+  right: 17%;
+  top: 0;
+  bottom:0;
+  width: 100%;
+  background: rgba(255,255,255,0.8);
+}
+
+.scroll-content {
+  background: rgba(255,255,255,0.8);
+}
 
 .badge-grey {
   background-color: #777;

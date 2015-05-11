@@ -1,6 +1,6 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, Station, Departure, Favorite) {
+.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, $ionicModal, Station, Departure, Favorite) {
   $scope.tags = [];
   $scope.departures_cache = null;
   $scope.favorites = Favorite.all();
@@ -17,6 +17,30 @@ angular.module('vgn.controllers', [])
       $scope.$apply($scope.updateClock);
     }, 1000);
   }
+
+  $scope.contact = {
+    name: 'Mittens Cat',
+    info: 'Tap anywhere on the card to open the modal'
+  }
+
+  $ionicModal.fromTemplateUrl('suggestions_modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 
   $scope.search = function() {
     $scope.favorites = $scope.departures = null;
@@ -53,7 +77,6 @@ angular.module('vgn.controllers', [])
     $scope.favorite = null;
     Favorite.remove(station);
   }
-
 
   $scope.addTag = function(tag) {
     if(!_.findWhere($scope.tags, tag)) {
@@ -95,6 +118,7 @@ angular.module('vgn.controllers', [])
 
     Departure.query({ station: station.id, limit: 30 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
+      $scope.closeModal();
       $ionicLoading.hide();
     });
 

@@ -1,6 +1,11 @@
 <ion-view view-title="VGN Departures">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="openModal()">
+      <i class="icon ion-ios-search-strong"></i>
+    </button>
+  </ion-nav-buttons>
 
-  <ion-content>
+  <ion-content class="has-header">
     <div class="item item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
@@ -17,7 +22,6 @@
         <i class="icon ion-star" ng-class="{energized: favorite}"></i>
       </button>
     </div>
-
 
     <ul class="tags" ng-if="tags.length > 0">
       <li>Filters:</li>
