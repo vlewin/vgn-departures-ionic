@@ -1,6 +1,7 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, $ionicModal, Station, Departure, Favorite) {
+.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $location, $ionicLoading, $ionicModal, $ionicPopover,
+                                       Station, Departure, Favorite) {
   $scope.tags = [];
   $scope.favorite = Favorite.last();
   $scope.departures_cache = null;
@@ -34,6 +35,7 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.clearSearch = function() {
+    $location.search({});
     $scope.departures = $scope.favorite = $scope.suggestions;
     $scope.station = {};
     $scope.tags = [];
@@ -133,18 +135,15 @@ angular.module('vgn.controllers', [])
 
   // Init
   $scope.initClock();
-  
+
   $ionicModal.fromTemplateUrl('suggestions_modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal
 
-    console.log($scope.departures)
-    console.log($scope.suggestions)
-
     if($scope.favorite) {
-      $scope.loadDepartures($scope.favorite)
+      // $scope.loadDepartures($scope.favorite)
     } else {
       $scope.modal.show()
     }
@@ -156,7 +155,7 @@ angular.module('vgn.controllers', [])
   });
 
   if($scope.station.id) {
-    $scope.loadDepartures($scope.station)
+    $scope.loadDepartures($scope.station);
   }
 
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })

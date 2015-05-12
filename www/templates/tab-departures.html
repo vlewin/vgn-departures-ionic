@@ -1,12 +1,36 @@
 <ion-view view-title="VGN Departures">
   <ion-nav-buttons side="right">
-    <button class="button button-clear" ng-click="openModal()">
+    <button class="button button-clear pulse" ng-click="openModal()">
       <i class="icon ion-ios-search-strong"></i>
     </button>
   </ion-nav-buttons>
 
   <ion-content class="has-header">
     <ion-refresher refreshing-icon="none" on-refresh="loadDepartures(station)"></ion-refresher>
+
+
+    <ion-item class="item-icon-left item-text-wrap" ng-if="!departures" ng-click="openModal()">
+      <i class="icon ion-ios-help-outline"></i>
+      How to find departures?
+      <p>Press 'search' icon in the top right corner</p>
+    </ion-item>
+
+    <ion-item class="item-icon-left item-text-wrap" ng-if="!departures && favorites.length == 0">
+      <i class="icon ion-ios-help-outline"></i>
+      How to add a station to my favorites?
+      <p>Press 'star' icon on departures tab</p>
+    </ion-item>
+
+    <ion-item class="item-divider" ng-if="!departures && favorites.length">
+      Favorites
+    </ion-item>
+
+    <div class="list no-margin no-padding" ng-if="!departures && favorites">
+      <li class="item" ng-repeat="favorite in favorites" ng-click="loadDepartures(favorite)">
+        <i class= "icon ion-star energized"></i>
+        {{favorite.name}}
+      </li>
+    </div>
 
     <ion-item class="item item-divider item-icon-right bold" ng-if="departures" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
       <!-- <i class="icon ion-clock"></i> -->

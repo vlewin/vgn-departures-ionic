@@ -1,6 +1,6 @@
 <div class="modal">
   <header class="bar bar-header bar-positive">
-    <h1 class="title">Station</h1>
+    <h1 class="title">Search</h1>
     <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-ios-close-outline"></span></div>
   </header>
 
@@ -12,6 +12,7 @@
 
   <ion-view>
     <ion-content class="has-header">
+
       <ion-item class="item-input-inset">
         <label class="item-input-wrapper">
           <i class="icon ion-ios-search placeholder-icon"></i>
@@ -28,17 +29,6 @@
       <div class="list no-margin no-padding" ng-if="suggestions">
         <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">
           {{suggestion.name}}
-        </li>
-      </div>
-
-      <ion-item class="item-divider" ng-if="favorites.length">
-        Favorites
-      </ion-item>
-
-      <div class="list no-margin no-padding" ng-if="favorites">
-        <li class="item" ng-repeat="favorite in favorites" ng-click="loadDepartures(favorite)">
-          <i class= "icon ion-star energized"></i>
-          {{favorite.name}}
         </li>
       </div>
 

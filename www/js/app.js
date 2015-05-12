@@ -1,6 +1,6 @@
 angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
 
-.run(function($ionicPlatform, $rootScope, $localStorage, $ionicScrollDelegate, Favorite) {
+.run(function($ionicPlatform, $rootScope, $state, $localStorage, $ionicScrollDelegate, Favorite) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
