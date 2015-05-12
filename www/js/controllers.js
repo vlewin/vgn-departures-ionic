@@ -1,9 +1,9 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, Station, Departure, Favorite) {
+.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, $ionicModal, Station, Departure, Favorite) {
   $scope.tags = [];
   $scope.departures_cache = null;
-  $scope.favorites = Favorite.all();
+  // $scope.favorites = Favorite.all();
   $scope.station = $state.params;
 
   $scope.updateClock = function() {
@@ -12,14 +12,34 @@ angular.module('vgn.controllers', [])
 
   $scope.initClock = function() {
     $scope.date = $filter('date')(new Date(),'dd.MM.yy');
+    $scope.time = $filter('date')(new Date(),'HH:mm');
 
     var timer = setInterval(function() {
       $scope.$apply($scope.updateClock);
     }, 1000);
   }
 
+  $ionicModal.fromTemplateUrl('suggestions_modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+  })
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+
   $scope.search = function() {
-    $scope.favorites = $scope.departures = null;
+    $scope.departures = null;
 
     if($scope.timeout) {
       clearTimeout($scope.timeout);
@@ -27,7 +47,7 @@ angular.module('vgn.controllers', [])
 
     $scope.timeout = setTimeout(function() {
       Station.query({ station: $scope.station.name}, function(suggestions) {
-        $scope.suggestions =  suggestions
+        $scope.suggestions =  suggestions;
       });
     }, 500);
   }
@@ -35,6 +55,7 @@ angular.module('vgn.controllers', [])
   $scope.clearSearch = function() {
     $scope.departures = $scope.favorite = null;
     $scope.station = {};
+    $scope.suggestions = {};
     $scope.tags = [];
 
     $scope.favorites = Favorite.all();
@@ -46,14 +67,16 @@ angular.module('vgn.controllers', [])
 
   $scope.addFavorite = function(station) {
     Favorite.push(station);
-    $scope.favorite = Favorite.exist(station)
+    $scope.favorite = Favorite.exist(station);
+    $scope.favorites = Favorite.all();
   }
 
   $scope.removeFavorite = function(station) {
-    $scope.favorite = null;
     Favorite.remove(station);
-  }
 
+    $scope.favorite = null;
+    $scope.favorites = Favorite.all();
+  }
 
   $scope.addTag = function(tag) {
     if(!_.findWhere($scope.tags, tag)) {
@@ -91,12 +114,15 @@ angular.module('vgn.controllers', [])
     $scope.limit = (nodes.indexOf(station.id) !== -1) ? 24 : 12;
     $scope.isFavorite(station);
     $scope.station = station;
-    $scope.suggestions = $scope.favorites = null;
+    $scope.suggestions = null;
 
     Departure.query({ station: station.id, limit: 30 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
+      $scope.closeModal();
       $ionicLoading.hide();
-    });
+
+      $scope.$broadcast('scroll.refreshComplete');
+    })
 
     $scope.$watch('departures', function (newValue, oldValue, scope) {
      var valid = [];
@@ -117,11 +143,11 @@ angular.module('vgn.controllers', [])
   if($scope.station.id) {
     $scope.loadDepartures($scope.station)
   }
-  // $scope.loadDepartures({ id: 's:3000503'})
+
+  // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
 
 .controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
-  // $scope.favorites = [{name: "AAAA", id: 1}, {name: "BBBB", id: 2}]
   $scope.favorites = Favorite.all();
   $scope.editMode = false;
 
@@ -139,6 +165,7 @@ angular.module('vgn.controllers', [])
 
   $scope.delete = function(favorite){
     $scope.favorites = Favorite.remove(favorite)
+    $scope.favorites = Favorite.all();
   }
 
   $scope.deleteAll = function(favorite){

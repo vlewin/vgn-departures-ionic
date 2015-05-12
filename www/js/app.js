@@ -1,6 +1,6 @@
 angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
 
-.run(function($ionicPlatform, $rootScope, $localStorage, $ionicScrollDelegate) {
+.run(function($ionicPlatform, $rootScope, $localStorage, $ionicScrollDelegate, Favorite) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -28,6 +28,8 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
   $rootScope.scrollTop = function() {
     $ionicScrollDelegate.scrollTop(true)
   };
+
+  $rootScope.favorites = Favorite.all()
 
   $rootScope.showAddToHomePopup()
 })
