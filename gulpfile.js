@@ -7,7 +7,6 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var templateCache = require('gulp-angular-templatecache');
-var tap = require('gulp-tap');
 
 var paths = {
   templatecache: ['./www/templates/**/*.html'],

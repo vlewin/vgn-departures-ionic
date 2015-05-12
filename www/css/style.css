@@ -17,21 +17,38 @@ ion-pane:first-of-type {
 }
 
 .modal {
-  left: 0;
-  right: 17%;
   top: 0;
   bottom:0;
-  width: 100%;
+  left: 0;
+  right: 0;
+
   background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 14px #636363;
+
+  width: 100%;
+  max-width: 960px;
+}
+
+@media (min-width: 960px) {
+  .modal {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 }
 
 .scroll-content {
   background: rgba(255,255,255,0.8);
 }
 
-.badge-grey {
-  background-color: #777;
-  color: #fff;
+.item .badge {
+  right: 16px;
+  top: 16px;
+}
+
+.grey {
+  /*background-color: #777;*/
+  color: #777;
 }
 
 .bold {

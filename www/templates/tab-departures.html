@@ -6,25 +6,16 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <div class="item item-input-inset">
-      <label class="item-input-wrapper">
-        <i class="icon ion-ios-search placeholder-icon"></i>
-        <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name">
-      </label>
-
-      <form name="search_form" ng-submit="clearSearch()">
-        <button class="button button-clear no-margin" ng-click="clearSearch()">
-          <i class="icon ion-android-cancel"></i>
-        </button>
-      </form>
-
-      <button class="button button-clear no-margin" ng-class="{energized: favorite}" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
-        <i class="icon ion-star" ng-class="{energized: favorite}"></i>
-      </button>
-    </div>
+    <ion-item class="item item-divider item-icon-right bold" ng-if="departures" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
+      <!-- <i class="icon ion-clock"></i> -->
+      {{ station.name }}
+      <p>{{ date }} {{ time }}</p>
+      <i class="icon ion-star grey" ng-class="{energized: favorite}"></i>
+    </ion-item>
 
     <ul class="tags" ng-if="tags.length > 0">
       <li>Filters:</li>
+
     	<li ng-repeat="tag in tags track by $index" ng-click="removeTag(tag)">
         <a href="#">{{tag.name}}
           <i class="icon ion-close-circled"></i>
@@ -32,38 +23,13 @@
       </li>
     </ul>
 
-    <div class="list no-margin no-padding" ng-if="suggestions">
-      <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">
-        {{suggestion.name}}
-      </li>
-    </div>
-
-    <div class="list no-margin no-padding" ng-if="favorites">
-      <li class="item" ng-repeat="favorite in favorites" ng-click="loadDepartures(favorite)">
-        <i class= "icon ion-star energized"></i>
-        {{favorite.name}}
-      </li>
-    </div>
-
-    <div class="item item-divider no-padding" ng-if="departures">
-      <div class="row">
-        <div class="col col-100">
-          <ion-item class="item-icon-left">
-            <i class="icon ion-ios-calendar"></i>
-            {{ date }}
-            {{ time }}
-          </ion-item>
-        </div>
-      </div>
-    </div>
-
     <div class="list">
       <li class="item item-avatar" ng-repeat="departure in departures | limitTo:limit">
         <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'line', name: departure.line }); scrollTop()">
           {{departure.line}}
         </span>
         <h2>
-          <i class="icon ion-ios-navigate-outline dark"></i>
+          <i class="icon ion-ios-navigate-outline grey"></i>
 
           <a href="#" class="dark bold" ng-click="addTag({ type: 'direction', name: departure.direction}); scrollTop()">
             {{ departure.direction }}
