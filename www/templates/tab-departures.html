@@ -6,11 +6,13 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
+    <ion-refresher refreshing-icon="none" on-refresh="loadDepartures(station)"></ion-refresher>
+
     <ion-item class="item item-divider item-icon-right bold" ng-if="departures" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
       <!-- <i class="icon ion-clock"></i> -->
       {{ station.name }}
       <p>{{ date }} {{ time }}</p>
-      <i class="icon ion-star grey" ng-class="{energized: favorite}"></i>
+      <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i>
     </ion-item>
 
     <ul class="tags" ng-if="tags.length > 0">

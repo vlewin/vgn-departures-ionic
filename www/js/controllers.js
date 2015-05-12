@@ -66,14 +66,12 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.addFavorite = function(station) {
-    console.log("Reload addFavorite")
     Favorite.push(station);
     $scope.favorite = Favorite.exist(station);
     $scope.favorites = Favorite.all();
   }
 
   $scope.removeFavorite = function(station) {
-    console.log("Reload removeFavorite")
     Favorite.remove(station);
 
     $scope.favorite = null;
@@ -122,7 +120,9 @@ angular.module('vgn.controllers', [])
       $scope.departures_cache = $scope.departures = departures;
       $scope.closeModal();
       $ionicLoading.hide();
-    });
+
+      $scope.$broadcast('scroll.refreshComplete');
+    })
 
     $scope.$watch('departures', function (newValue, oldValue, scope) {
      var valid = [];
