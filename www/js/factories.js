@@ -60,6 +60,10 @@ module.factory('Favorite', function($rootScope, $resource, $localStorage) {
       }
   }
 
+  Favorite.last = function() {
+    return _.last(this.all());
+  };
+
   Favorite.exist = function(favorite) {
     if(favorite) {
       var f = _.find(this.all(), function(f){ return f.id == favorite.id})

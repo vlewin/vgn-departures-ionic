@@ -2,8 +2,8 @@ angular.module('vgn.controllers', [])
 
 .controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $ionicLoading, $ionicModal, Station, Departure, Favorite) {
   $scope.tags = [];
+  $scope.favorite = Favorite.last();
   $scope.departures_cache = null;
-  // $scope.favorites = Favorite.all();
   $scope.station = $state.params;
 
   $scope.updateClock = function() {
@@ -18,25 +18,6 @@ angular.module('vgn.controllers', [])
       $scope.$apply($scope.updateClock);
     }, 1000);
   }
-
-  $ionicModal.fromTemplateUrl('suggestions_modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal
-  })
-
-  $scope.openModal = function() {
-    $scope.modal.show()
-  }
-
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
-
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
 
   $scope.search = function() {
     $scope.departures = null;
@@ -53,9 +34,8 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.clearSearch = function() {
-    $scope.departures = $scope.favorite = null;
+    $scope.departures = $scope.favorite = $scope.suggestions;
     $scope.station = {};
-    $scope.suggestions = {};
     $scope.tags = [];
 
     $scope.favorites = Favorite.all();
@@ -138,7 +118,42 @@ angular.module('vgn.controllers', [])
     }, true);
   };
 
+  $scope.initModal = function(){
+
+  }
+
+  $scope.openModal = function() {
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+
+  // Init
   $scope.initClock();
+  
+  $ionicModal.fromTemplateUrl('suggestions_modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal
+
+    console.log($scope.departures)
+    console.log($scope.suggestions)
+
+    if($scope.favorite) {
+      $scope.loadDepartures($scope.favorite)
+    } else {
+      $scope.modal.show()
+    }
+  })
+
+  // Angular callbacks
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
 
   if($scope.station.id) {
     $scope.loadDepartures($scope.station)
