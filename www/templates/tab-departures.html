@@ -6,7 +6,7 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header">
-    <ion-refresher refreshing-icon="none" on-refresh="loadDepartures(station)"></ion-refresher>
+    <ion-refresher refreshing-icon="none" ng-if="station.id" on-refresh="loadDepartures(station)"></ion-refresher>
 
 
     <ion-item class="item-icon-left item-text-wrap" ng-if="!departures" ng-click="openModal()">
