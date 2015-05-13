@@ -1,9 +1,8 @@
 angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($scope, $resource, $filter, $state, $location, $ionicLoading, $ionicModal, $ionicPopover,
+.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $filter, $state, $location, $ionicLoading, $ionicModal, $ionicPopover,
                                        Station, Departure, Favorite) {
   $scope.tags = [];
-  $scope.favorite = Favorite.last();
   $scope.departures_cache = null;
   $scope.station = $state.params;
 
@@ -13,7 +12,7 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.updateClock = function() {
-    // $scope.time = $scope.now('HH:mm');
+    $scope.time = $scope.now('HH:mm');
   };
 
   $scope.initClock = function() {
@@ -41,28 +40,11 @@ angular.module('vgn.controllers', [])
 
   $scope.clearSearch = function() {
     $location.search({});
-    $scope.departures = $scope.favorite = $scope.suggestions;
+    $scope.departures = $rootScope.favorite = $scope.suggestions;
     $scope.station = {};
     $scope.tags = [];
 
-    $scope.favorites = Favorite.all();
-  }
-
-  $scope.isFavorite = function(station) {
-    $scope.favorite = Favorite.exist(station)
-  }
-
-  $scope.addFavorite = function(station) {
-    Favorite.push(station);
-    $scope.favorite = Favorite.exist(station);
-    $scope.favorites = Favorite.all();
-  }
-
-  $scope.removeFavorite = function(station) {
-    Favorite.remove(station);
-
-    $scope.favorite = null;
-    $scope.favorites = Favorite.all();
+    $rootScope.favorites = Favorite.all();
   }
 
   $scope.addTag = function(tag) {
@@ -99,9 +81,9 @@ angular.module('vgn.controllers', [])
 
     var nodes = ['s:3000510', 's:3001970', 's:3000704'];
     $scope.limit = (nodes.indexOf(station.id) !== -1) ? 24 : 12;
-    $scope.isFavorite(station);
     $scope.station = station;
     $scope.suggestions = null;
+    $rootScope.isFavorite(station);
 
     Departure.query({ station: station.id, limit: 30 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
@@ -167,7 +149,7 @@ angular.module('vgn.controllers', [])
 })
 
 .controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
-  $scope.favorites = Favorite.all();
+  $rootScope.favorites = Favorite.all();
   $scope.editMode = false;
 
   $scope.go = function(station){
@@ -183,8 +165,8 @@ angular.module('vgn.controllers', [])
   }
 
   $scope.delete = function(favorite){
-    $scope.favorites = Favorite.remove(favorite)
-    $scope.favorites = Favorite.all();
+    $rootScope.favorites = Favorite.remove(favorite)
+    // $rootScope.favorites = Favorite.all();
   }
 
   $scope.deleteAll = function(favorite){
@@ -195,7 +177,7 @@ angular.module('vgn.controllers', [])
     }
 
     $scope.editMode = false;
-    $scope.favorites = Favorite.all()
+    $rootScope.favorites = Favorite.all()
   }
 })
 

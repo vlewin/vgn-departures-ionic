@@ -29,7 +29,26 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
     $ionicScrollDelegate.scrollTop(true)
   };
 
-  $rootScope.favorites = Favorite.all()
+
+  $rootScope.isFavorite = function(station) {
+    $rootScope.favorite = Favorite.exist(station)
+  }
+
+  $rootScope.addFavorite = function(station) {
+    Favorite.push(station);
+    $rootScope.favorite = Favorite.exist(station);
+    $rootScope.favorites = Favorite.all();
+  }
+
+  $rootScope.removeFavorite = function(station) {
+    Favorite.remove(station);
+
+    $rootScope.favorite = null;
+    $rootScope.favorites = Favorite.all();
+  }
+
+  $rootScope.favorites = Favorite.all();
+  $rootScope.favorite = Favorite.last();
 
   $rootScope.showAddToHomePopup()
 })
