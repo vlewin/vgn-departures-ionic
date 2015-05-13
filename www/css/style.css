@@ -208,8 +208,8 @@ input#search {
 	-moz-animation: pulse 1s linear infinite;
 	-ms-animation: pulse 1s linear infinite;
 	animation: pulse 1s linear infinite;
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;}
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;}
 
 @keyframes "pulse" {
  0% {

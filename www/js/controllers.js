@@ -7,13 +7,18 @@ angular.module('vgn.controllers', [])
   $scope.departures_cache = null;
   $scope.station = $state.params;
 
+  $scope.now = function(format) {
+    var format = format ? format : 'HH:mm:ss';
+    return $filter('date')(new Date(), format)
+  }
+
   $scope.updateClock = function() {
-    $scope.time = $filter('date')(new Date(),'HH:mm');
+    // $scope.time = $scope.now('HH:mm');
   };
 
   $scope.initClock = function() {
     $scope.date = $filter('date')(new Date(),'dd.MM.yy');
-    $scope.time = $filter('date')(new Date(),'HH:mm');
+    $scope.time = $scope.now('HH:mm');
 
     var timer = setInterval(function() {
       $scope.$apply($scope.updateClock);
@@ -145,7 +150,7 @@ angular.module('vgn.controllers', [])
     if($scope.favorite) {
       // $scope.loadDepartures($scope.favorite)
     } else {
-      $scope.modal.show()
+      // $scope.modal.show()
     }
   })
 
