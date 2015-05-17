@@ -148,6 +148,10 @@ angular.module('vgn.controllers', [])
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
 
+.controller('ConnectionsCtrl', function($rootScope, $scope, $resource) {
+
+})
+
 .controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
   $rootScope.favorites = Favorite.all();
   $scope.editMode = false;

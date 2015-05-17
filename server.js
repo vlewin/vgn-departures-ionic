@@ -1,9 +1,9 @@
 require('newrelic');
-
 var compression = require('compression');
 var express = require('express');
 var http = require('http');
 var cheerio = require("cheerio");
+var dateFormat = require('dateformat');
 var path    = require("path");
 var portNumber = 3001;
 var app = express();
@@ -19,20 +19,16 @@ app.use(function(req, res, next) {
 
 
 // Routing
-app.get("/", function (request, response) {
-  response.sendFile(path.join(__dirname+'/views/index.html'));
-});
-
 app.get("/suggestions", function (request, response) {
   console.log("*** /suggestions => Incomming request");
   console.log(request.query);
 
   var station = request.query.station;
 
-  if(station.indexOf('Nürnberg') === -1) {
-    station = 'Nürnberg, ' + request.query.station;
-    console.log(request.query.station + ' >>> ' + station);
-  }
+  // if(station.indexOf('Nürnberg') === -1) {
+  //   station = 'Nürnberg, ' + request.query.station;
+  //   console.log(request.query.station + ' >>> ' + station);
+  // }
 
   var api_url = "http://m.vgn.de/ib/site/tools/EFA_Suggest_v2.php?country=No&query=" + station;
 
@@ -46,10 +42,11 @@ app.get("/suggestions", function (request, response) {
     });
 
     res.on('end', function(){
+      var cities = ['Nürnberg', 'Fürth', 'Erlangen'];
       var json = JSON.parse(chunks.join('').toString());
       var suggestions = [];
       for (var i = 0; i < json.suggestions.length; i++) {
-        if(json.icons[i] === 'Haltestelle') {
+        if(json.icons[i] === 'Haltestelle' && cities.contains(json.suggestions[i])) {
           suggestions.push({ name: json.suggestions[i], type: json.icons[i], id: json.data[i] });
         }
       }
@@ -70,8 +67,6 @@ app.get("/departures", function (request, response) {
 
   var id = request.query.station;
   var limit = request.query.limit;
-
-  // var api_url = 'http://m.vgn.de/echtzeit-abfahrten/?sl=s%3A3000331&slb=N%C3%BCrnberg%2C+Maxfeld&s=N%C3%BCrnberg%2C+Maxfeld&ts=1427224767&query_date=abfragen'
   var api_url = 'http://m.vgn.de/echtzeit-abfahrten/?sl=' + id;
 
   http.get(api_url, function(res) {
@@ -83,11 +78,11 @@ app.get("/departures", function (request, response) {
     });
 
     res.on('end', function(){
-      var nodes = ['s:3000510', 's:3001970', 's:3000704'];
+      var nodes = ['s:3000510', 's:3001970', 's:3000704', 's:3002110', 's:3003110'];
       limit = (nodes.indexOf(id) !== -1) ? 50 : limit;
 
       var html = chunks.join('').toString();
-      var departures = parseHTML(html).slice(0,limit);
+      var departures = parseDeparturesHTML(html).slice(0,limit);
       response.send(departures);
    });
 
@@ -97,8 +92,46 @@ app.get("/departures", function (request, response) {
   });
 });
 
+app.get("/connections", function (request, response) {
+  console.log("*** /connections => Incomming request");
+  console.log(request.query);
+
+  var sl = 's:3000510';
+  var zl = 's:3000331';
+
+  var today = new Date();
+  var date = dateFormat(today, "yyyy-mm-dd");
+  var time = dateFormat(today,  "HH:MM");
+
+  // http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
+  var api_url = 'http://m.vgn.de/komfortauskunft/auskunft/?sl=' + sl + ' &zl=' + zl + '&d=' + date + '&t=' + time + '&query_date=abfragen'
+
+  http.get(api_url, function(res) {
+    console.log("Got response: " + res.statusCode);
+    var chunks = [];
+
+    res.on('data', function(chunk){
+      chunks.push(chunk);
+    });
+
+    res.on('end', function(){
+      // var nodes = ['s:3000510', 's:3001970', 's:3000704', 's:3002110', 's:3003110'];
+      // limit = (nodes.indexOf(id) !== -1) ? 50 : limit;
+
+      var html = chunks.join('').toString();
+      // var departures = parseHTML(html).slice(0,limit);
+      parseConnectionsHTML(html);
+      response.send(html);
+   });
+
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+    response.jsonp({ status: 'ERROR', response: e.message });
+  });
+});
+
 // HELPERS
-function parseHTML(html) {
+function parseDeparturesHTML(html) {
   var $ = cheerio.load(html);
 
   var list = $('ul.r-Result li');
@@ -142,6 +175,30 @@ function parseHTML(html) {
 
   return departures;
 }
+
+function parseConnectionsHTML(html) {
+  var $ = cheerio.load(html);
+
+  var container = $('div.content-primary');
+  var list = container.find('li');
+  var connections = [];
+
+  debugger
+  list.each(function(i) {
+    var connecton = list[i];
+
+    var times = connecton.find('b');
+
+    connections.push({
+      start: times.shift().text(),
+      end: times.pop().text()
+    });
+  });
+
+  console.log(connections);
+  return connections;
+}
+
 
 // FIXME: merge scheduledTime and actualTime together
 // handle exception cases e.g. '10:00 Halt entfällt' correctly
@@ -188,7 +245,8 @@ function actualTime(string){
   return date.getTime();
 }
 
-// http://m.vgn.de/komfortauskunft/auskunft/?sl=s%3A3000331&zl=s%3A3000503&d=2015-05-04&t=20%3A41&da=dep&ts=1430764903&query_date=abfragen
+// VERBINDUNGEN URL
+// http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
 
 Array.prototype.contains = function ( needle ) {
     for (var i = 0; i < this.length; i++) {
