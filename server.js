@@ -69,6 +69,8 @@ app.get("/departures", function (request, response) {
   var limit = request.query.limit;
   var api_url = 'http://m.vgn.de/echtzeit-abfahrten/?sl=' + id;
 
+  console.log('API: ' + api_url);
+
   http.get(api_url, function(res) {
     console.log("Got response: " + res.statusCode);
     var chunks = [];
@@ -115,13 +117,8 @@ app.get("/connections", function (request, response) {
     });
 
     res.on('end', function(){
-      // var nodes = ['s:3000510', 's:3001970', 's:3000704', 's:3002110', 's:3003110'];
-      // limit = (nodes.indexOf(id) !== -1) ? 50 : limit;
-
       var html = chunks.join('').toString();
-      // var departures = parseHTML(html).slice(0,limit);
-      parseConnectionsHTML(html);
-      response.send(html);
+      response.send(parseConnectionsHTML(html));
    });
 
   }).on('error', function(e) {
@@ -141,11 +138,8 @@ function parseDeparturesHTML(html) {
 
   times.each(function(index) {
     var time_cell = $(this).text();
-    var scheduled_time = scheduledTime(time_cell.trim());
-    var actial_time = actualTime(time_cell.trim());
-
-    var scheduled_time = scheduledTime(time_cell.trim());
-    var actial_time = actualTime(time_cell.trim());
+    var scheduled_time = departureTime(time_cell.trim());
+    var actial_time = departureTime(time_cell.trim());
 
     var now = new Date().getTime() + 60000;
     var delay = time_cell.indexOf('+') > -1 ? '+' + time_cell.split('+').pop() : 0;
@@ -180,73 +174,85 @@ function parseConnectionsHTML(html) {
   var $ = cheerio.load(html);
 
   var container = $('div.content-primary');
-  var list = container.find('li');
+  var headers = container.find('h3');
+  var infos = container.find('p');
   var connections = [];
 
-  debugger
-  list.each(function(i) {
-    var connecton = list[i];
-
+  headers.each(function(i) {
+    var connecton = $(headers[i]);
     var times = connecton.find('b');
+    var images = connecton.find('img');
+    var info = $(infos[i]);
+    var transports = [];
+
+    for(var j=0; j < images.length; j++) {
+      var array = images[j].attribs.title.split(' ');
+
+      transports.push({
+        transport: array[0],
+        line: array[1]
+      });
+    }
 
     connections.push({
-      start: times.shift().text(),
-      end: times.pop().text()
+      start: $(times[0]).text().to_timestamp(),
+      end: $(times[times.length-1]).text().to_timestamp(),
+      transports: transports,
+      info: info.text()
     });
   });
 
-  console.log(connections);
   return connections;
 }
 
-
 // FIXME: merge scheduledTime and actualTime together
 // handle exception cases e.g. '10:00 Halt entfällt' correctly
-function scheduledTime(string){
-  var date = new Date();
-
+function departureTime(string){
   try {
-    var hh = string.split(':')[0];
-    var mm = string.split(':')[1].split('+').shift();
-    mm = eval(mm);
+    var date = new Date();
 
-    date.setHours(hh);
-    date.setMinutes(mm);
-    date.setSeconds(0);
+    if(string.indexOf('+') === -1){
+      var hh = string.split(':')[0];
+      var mm = string.split(':')[1];
+
+      date.setHours(hh);
+      date.setMinutes(mm);
+      date.setSeconds(0);
+
+      return date.getTime();
+
+    } else {
+      var hh = parseInt(string.split(':')[0]);
+      var mm = parseInt(string.split(':')[1].split('+').shift());
+
+      date.setHours(hh);
+      date.setMinutes(mm);
+      date.setSeconds(0);
+
+      // var delay = parseInt(string.split(':')[1].split('+').pop());
+
+      // if(mm + delay >= 60) {
+      //   hh += 1;
+      //   mm = mm + delay%60;
+      // } else {
+      //   mm = mm + delay;
+      // }
+
+      return date.getTime();
+    }
   } catch(e) {
-    console.log("Error: " + e);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
+    console.error("Error: " + e);
+
+    return '00:00'.to_timestamp();
   }
-
-  return date.getTime();
-}
-
-// FIXME: merge scheduledTime and actualTime together
-// handle exception cases e.g. '10:00 Halt entfällt' correctly
-function actualTime(string){
-  var date = new Date();
-
-  try {
-    var hh = string.split(':')[0];
-    var mm = eval(string.split(':')[1]);
-
-    date.setHours(hh);
-    date.setMinutes(mm);
-    date.setSeconds(0);
-  } catch(e) {
-    console.log("Error: " + e);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-  }
-
-  return date.getTime();
 }
 
 // VERBINDUNGEN URL
 // http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
+
+String.prototype.to_timestamp = function() {
+  return (new Date (new Date().toDateString() + ' ' + this)).getTime()
+}
 
 Array.prototype.contains = function ( needle ) {
     for (var i = 0; i < this.length; i++) {
