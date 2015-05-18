@@ -50,7 +50,7 @@
     </ul>
 
     <div class="list">
-      <li class="item item-avatar" ng-repeat="departure in departures | limitTo:limit">
+      <li class="item item-avatar" ng-repeat="departure in departures | orderBy: 'actial_time' | limitTo:limit">
         <span class="item-transport {{departure.transport}} {{departure.line}}" ng-click="addTag({ type: 'line', name: departure.line }); scrollTop()">
           {{departure.line}}
         </span>
@@ -63,8 +63,8 @@
         </h2>
         <p>
           <i class="icon ion-clock " ng-class="{ assertive: departure.delay != 0}"></i>
-          {{ departure.time() }}
-          <span ng-if="departure.delay != 0">({{ departure.delay }})</span>
+          <span ng-class="{ assertive: departure.delay != 0}">{{ departure.time() }}</span>
+          <span ng-if="departure.delay != 0" ng-class="{ assertive: departure.delay != 0}">({{ departure.delay }})</span>
         </p>
         <span class="badge {{ departure.about_to_expire ? 'badge-assertive' : 'badge-grey' }}">
           {{ departure.time_left() }}
