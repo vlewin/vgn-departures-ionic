@@ -1,9 +1,9 @@
 require('newrelic');
-
 var compression = require('compression');
 var express = require('express');
 var http = require('http');
 var cheerio = require("cheerio");
+var dateFormat = require('dateformat');
 var path    = require("path");
 var portNumber = 3001;
 var app = express();
@@ -19,20 +19,16 @@ app.use(function(req, res, next) {
 
 
 // Routing
-app.get("/", function (request, response) {
-  response.sendFile(path.join(__dirname+'/views/index.html'));
-});
-
 app.get("/suggestions", function (request, response) {
   console.log("*** /suggestions => Incomming request");
   console.log(request.query);
 
   var station = request.query.station;
 
-  if(station.indexOf('Nürnberg') === -1) {
-    station = 'Nürnberg, ' + request.query.station;
-    console.log(request.query.station + ' >>> ' + station);
-  }
+  // if(station.indexOf('Nürnberg') === -1) {
+  //   station = 'Nürnberg, ' + request.query.station;
+  //   console.log(request.query.station + ' >>> ' + station);
+  // }
 
   var api_url = "http://m.vgn.de/ib/site/tools/EFA_Suggest_v2.php?country=No&query=" + station;
 
@@ -46,10 +42,11 @@ app.get("/suggestions", function (request, response) {
     });
 
     res.on('end', function(){
+      var cities = ['Nürnberg', 'Fürth', 'Erlangen'];
       var json = JSON.parse(chunks.join('').toString());
       var suggestions = [];
       for (var i = 0; i < json.suggestions.length; i++) {
-        if(json.icons[i] === 'Haltestelle') {
+        if(json.icons[i] === 'Haltestelle' && cities.contains(json.suggestions[i])) {
           suggestions.push({ name: json.suggestions[i], type: json.icons[i], id: json.data[i] });
         }
       }
@@ -70,9 +67,9 @@ app.get("/departures", function (request, response) {
 
   var id = request.query.station;
   var limit = request.query.limit;
-
-  // var api_url = 'http://m.vgn.de/echtzeit-abfahrten/?sl=s%3A3000331&slb=N%C3%BCrnberg%2C+Maxfeld&s=N%C3%BCrnberg%2C+Maxfeld&ts=1427224767&query_date=abfragen'
   var api_url = 'http://m.vgn.de/echtzeit-abfahrten/?sl=' + id;
+
+  console.log('API: ' + api_url);
 
   http.get(api_url, function(res) {
     console.log("Got response: " + res.statusCode);
@@ -83,11 +80,11 @@ app.get("/departures", function (request, response) {
     });
 
     res.on('end', function(){
-      var nodes = ['s:3000510', 's:3001970', 's:3000704'];
+      var nodes = ['s:3000510', 's:3001970', 's:3000704', 's:3002110', 's:3003110'];
       limit = (nodes.indexOf(id) !== -1) ? 50 : limit;
 
       var html = chunks.join('').toString();
-      var departures = parseHTML(html).slice(0,limit);
+      var departures = parseDeparturesHTML(html).slice(0,limit);
       response.send(departures);
    });
 
@@ -97,8 +94,41 @@ app.get("/departures", function (request, response) {
   });
 });
 
+app.get("/connections", function (request, response) {
+  console.log("*** /connections => Incomming request");
+  console.log(request.query);
+
+  var sl = 's:3000510';
+  var zl = 's:3000331';
+
+  var today = new Date();
+  var date = dateFormat(today, "yyyy-mm-dd");
+  var time = dateFormat(today,  "HH:MM");
+
+  // http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
+  var api_url = 'http://m.vgn.de/komfortauskunft/auskunft/?sl=' + sl + ' &zl=' + zl + '&d=' + date + '&t=' + time + '&query_date=abfragen'
+
+  http.get(api_url, function(res) {
+    console.log("Got response: " + res.statusCode);
+    var chunks = [];
+
+    res.on('data', function(chunk){
+      chunks.push(chunk);
+    });
+
+    res.on('end', function(){
+      var html = chunks.join('').toString();
+      response.send(parseConnectionsHTML(html));
+   });
+
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+    response.jsonp({ status: 'ERROR', response: e.message });
+  });
+});
+
 // HELPERS
-function parseHTML(html) {
+function parseDeparturesHTML(html) {
   var $ = cheerio.load(html);
 
   var list = $('ul.r-Result li');
@@ -108,11 +138,8 @@ function parseHTML(html) {
 
   times.each(function(index) {
     var time_cell = $(this).text();
-    var scheduled_time = scheduledTime(time_cell.trim());
-    var actial_time = actualTime(time_cell.trim());
-
-    var scheduled_time = scheduledTime(time_cell.trim());
-    var actial_time = actualTime(time_cell.trim());
+    var scheduled_time = departureTime(time_cell.trim());
+    var actial_time = departureTime(time_cell.trim());
 
     var now = new Date().getTime() + 60000;
     var delay = time_cell.indexOf('+') > -1 ? '+' + time_cell.split('+').pop() : 0;
@@ -143,52 +170,89 @@ function parseHTML(html) {
   return departures;
 }
 
-// FIXME: merge scheduledTime and actualTime together
-// handle exception cases e.g. '10:00 Halt entfällt' correctly
-function scheduledTime(string){
-  var date = new Date();
+function parseConnectionsHTML(html) {
+  var $ = cheerio.load(html);
 
-  try {
-    var hh = string.split(':')[0];
-    var mm = string.split(':')[1].split('+').shift();
-    mm = eval(mm);
+  var container = $('div.content-primary');
+  var headers = container.find('h3');
+  var infos = container.find('p');
+  var connections = [];
 
-    date.setHours(hh);
-    date.setMinutes(mm);
-    date.setSeconds(0);
-  } catch(e) {
-    console.log("Error: " + e);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-  }
+  headers.each(function(i) {
+    var connecton = $(headers[i]);
+    var times = connecton.find('b');
+    var images = connecton.find('img');
+    var info = $(infos[i]);
+    var transports = [];
 
-  return date.getTime();
+    for(var j=0; j < images.length; j++) {
+      var array = images[j].attribs.title.split(' ');
+
+      transports.push({
+        transport: array[0],
+        line: array[1]
+      });
+    }
+
+    connections.push({
+      start: $(times[0]).text().to_timestamp(),
+      end: $(times[times.length-1]).text().to_timestamp(),
+      transports: transports,
+      info: info.text()
+    });
+  });
+
+  return connections;
 }
 
 // FIXME: merge scheduledTime and actualTime together
 // handle exception cases e.g. '10:00 Halt entfällt' correctly
-function actualTime(string){
-  var date = new Date();
-
+function departureTime(string){
   try {
-    var hh = string.split(':')[0];
-    var mm = eval(string.split(':')[1]);
+    var date = new Date();
 
-    date.setHours(hh);
-    date.setMinutes(mm);
-    date.setSeconds(0);
+    if(string.indexOf('+') === -1){
+      var hh = string.split(':')[0];
+      var mm = string.split(':')[1];
+
+      date.setHours(hh);
+      date.setMinutes(mm);
+      date.setSeconds(0);
+
+      return date.getTime();
+
+    } else {
+      var hh = parseInt(string.split(':')[0]);
+      var mm = parseInt(string.split(':')[1].split('+').shift());
+
+      date.setHours(hh);
+      date.setMinutes(mm);
+      date.setSeconds(0);
+
+      // var delay = parseInt(string.split(':')[1].split('+').pop());
+
+      // if(mm + delay >= 60) {
+      //   hh += 1;
+      //   mm = mm + delay%60;
+      // } else {
+      //   mm = mm + delay;
+      // }
+
+      return date.getTime();
+    }
   } catch(e) {
-    console.log("Error: " + e);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-  }
+    console.error("Error: " + e);
 
-  return date.getTime();
+    return '00:00'.to_timestamp();
+  }
 }
 
-// http://m.vgn.de/komfortauskunft/auskunft/?sl=s%3A3000331&zl=s%3A3000503&d=2015-05-04&t=20%3A41&da=dep&ts=1430764903&query_date=abfragen
+// VERBINDUNGEN URL
+// http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
+
+String.prototype.to_timestamp = function() {
+  return (new Date (new Date().toDateString() + ' ' + this)).getTime()
+}
 
 Array.prototype.contains = function ( needle ) {
     for (var i = 0; i < this.length; i++) {
