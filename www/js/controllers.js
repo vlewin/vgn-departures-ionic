@@ -148,7 +148,15 @@ angular.module('vgn.controllers', [])
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
 
-.controller('ConnectionsCtrl', function($rootScope, $scope, $resource) {
+.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, Connection) {
+
+  $scope.loadConnections = function(station) {
+    Connection.query({ sl: 1, zl: 2 }, function(connections) {
+      $scope.connections = connections;
+    })
+  };
+
+  $scope.loadConnections()
 
 })
 

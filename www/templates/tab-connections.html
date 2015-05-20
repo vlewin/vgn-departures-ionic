@@ -1,0 +1,25 @@
+<ion-view view-title="Connections">
+  <ion-content>
+    <ion-list>
+
+      <ion-item class="item item-divider item-icon-right bold" ng-if="connections">
+        Nürnberg, Maxfeld => Nürnberg, Aufseßplatz
+        <p>Placeholder</p>
+        <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i>
+      </ion-item>
+
+      <ion-item class="item-icon-left item-icon-multi" ng-repeat="connection in connections">
+        <!-- {{ connection.transports }} -->
+        <span class="item-transport {{transport.transport}} {{transport.line}}" ng-repeat="transport in connection.transports" >
+          {{transport.line}}
+        </span>
+
+        {{connection.departure()}}-{{connection.arrival()}}
+        <p>
+          {{connection.info}}
+        </p>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

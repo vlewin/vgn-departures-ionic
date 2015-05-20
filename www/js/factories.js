@@ -18,12 +18,13 @@ module.factory('$localStorage', function($window) {
 });
 
 var API = 'http://vgn.herokuapp.com';
+var API = 'http://stealth-new.suse.de:3001';
 
-module.factory('Station', function($rootScope, $resource) {
+module.factory('Station', function($resource) {
   return $resource(API + '/suggestions/:id');
 })
 
-module.factory('Departure', function($rootScope, $resource, $filter) {
+module.factory('Departure', function($resource, $filter) {
   var Departure = $resource(API + '/departures/:id');
   function Departure(data) {
       for (attr in data) {
@@ -51,7 +52,21 @@ module.factory('Departure', function($rootScope, $resource, $filter) {
   return Departure;
 })
 
-module.factory('Favorite', function($rootScope, $resource, $localStorage) {
+module.factory('Connection', function($resource, $filter) {
+  var Connection = $resource(API + '/connections/:id');
+
+  Connection.prototype.departure = function() {
+    return $filter('date')(new Date(this.start),'HH:mm');
+  };
+
+  Connection.prototype.arrival = function() {
+    return $filter('date')(new Date(this.end),'HH:mm');
+  };
+
+  return Connection;
+})
+
+module.factory('Favorite', function($resource, $localStorage) {
   function Favorite(data) {
       for (attr in data) {
           if (data.hasOwnProperty(attr)) {

@@ -152,10 +152,14 @@ input#search {
   border-radius: 0;
 }
 
+.item-icon-multi {
+  padding-left: 120px;
+}
+
 .item-transport {
   color: white;
   height: 100%;
-  left: 16px;
+  left: 64px;
   line-height: 40px;
   max-height: 40px;
   max-width: 40px;
@@ -164,6 +168,10 @@ input#search {
   top: 17px;
   width: 100%;
   cursor: pointer;
+}
+
+.item-transport:first-child {
+  left: 16px;
 }
 
 .Stadtbus, .S-Bahn {

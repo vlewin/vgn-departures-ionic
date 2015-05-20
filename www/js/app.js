@@ -72,6 +72,16 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
     }
   })
 
+  .state('tab.connections', {
+    url: '/connections',
+    views: {
+      'tab-connections': {
+        templateUrl: 'tab-connections.html',
+        controller: 'ConnectionsCtrl'
+      }
+    }
+  })
+
   .state('tab.favorites', {
     cache: false,
     url: '/favorites',

@@ -17,7 +17,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-
 // Routing
 app.get("/suggestions", function (request, response) {
   console.log("*** /suggestions => Incomming request");
@@ -101,12 +100,17 @@ app.get("/connections", function (request, response) {
   var sl = 's:3000510';
   var zl = 's:3000331';
 
+  var sl = 's:3000331';
+  var zl = 's:3000533';
+  // var zl = 's:3000534';
+
   var today = new Date();
   var date = dateFormat(today, "yyyy-mm-dd");
   var time = dateFormat(today,  "HH:MM");
 
   // http://m.vgn.de/komfortauskunft/auskunft/?sl=s:3000331&zl=s:3000503&d=2015-05-17&t=20:41&query_date=abfragen
-  var api_url = 'http://m.vgn.de/komfortauskunft/auskunft/?sl=' + sl + ' &zl=' + zl + '&d=' + date + '&t=' + time + '&query_date=abfragen'
+  var api_url = 'http://m.vgn.de/komfortauskunft/auskunft/?sl=' + sl + '&zl=' + zl + '&d=' + date + '&t=' + time + '&query_date=abfragen'
+  console.log(api_url)
 
   http.get(api_url, function(res) {
     console.log("Got response: " + res.statusCode);
