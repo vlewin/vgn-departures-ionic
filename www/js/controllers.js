@@ -85,7 +85,7 @@ angular.module('vgn.controllers', [])
     $scope.suggestions = null;
     $rootScope.isFavorite(station);
 
-    Departure.query({ station: station.id, limit: 30 }, function(departures) {
+    Departure.query({ station: station.id, limit: 35 }, function(departures) {
       $scope.departures_cache = $scope.departures = departures;
       $scope.closeModal();
       $ionicLoading.hide();
