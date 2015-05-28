@@ -149,6 +149,8 @@ angular.module('vgn.controllers', [])
 })
 
 .controller('ConnectionsCtrl', function($rootScope, $scope, $resource, Connection) {
+  $scope.sl = { id: 1, name: "Nürnberg, Maxfeld"};
+  $scope.zl = { id:2, name: "Nürnberg, Aufseßplatz"};
 
   $scope.loadConnections = function(station) {
     Connection.query({ sl: 1, zl: 2 }, function(connections) {

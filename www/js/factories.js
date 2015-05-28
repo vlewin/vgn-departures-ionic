@@ -18,7 +18,7 @@ module.factory('$localStorage', function($window) {
 });
 
 var API = 'http://vgn.herokuapp.com';
-var API = 'http://stealth-new.suse.de:3001';
+var API = 'http://localhost:3001';
 
 module.factory('Station', function($resource) {
   return $resource(API + '/suggestions/:id');

@@ -2,21 +2,75 @@
   <ion-content>
     <ion-list>
 
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-log-in placeholder-icon"></i>
+          <input id="search" type="search" placeholder="From" ng-change="search()" ng-focus="scrollTop()" ng-value="sl.id" ng-model="sl.name">
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-log-out placeholder-icon"></i>
+          <input id="search" type="search" placeholder="To" ng-change="search()" ng-focus="scrollTop()" ng-value="zl.id" ng-model="zl.name">
+        </label>
+
+        <!-- <div class="item item-input-inset">
+          <button class="button button-block button-positive">Submit</button>
+        </div>
+
+        <div>
+          <button class="button button-block button-positive">Submit</button>
+        </div> -->
+
+      </div>
+
+      <ion-item class="item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-log-in placeholder-icon"></i>
+          <input id="search" type="search" placeholder="From" ng-change="search()" ng-focus="scrollTop()" ng-value="sl.id" ng-model="sl.name">
+        </label>
+
+        <form name="search_form" ng-submit="clearSearch()">
+          <button class="button button-clear no-margin no-padding" style="text-align: right;" ng-click="clearSearch()">
+            <i class="icon ion-android-cancel"></i>
+          </button>
+        </form>
+      </ion-item>
+
+      <ion-item class="item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-log-out placeholder-icon"></i>
+          <input id="search" type="search" placeholder="To" ng-change="search()" ng-focus="scrollTop()" ng-value="zl.id" ng-model="zl.name">
+        </label>
+
+        <form name="search_form" ng-submit="clearSearch()">
+          <button class="button button-clear no-margin no-padding" style="text-align: right;" ng-click="clearSearch()">
+            <i class="icon ion-android-cancel"></i>
+          </button>
+        </form>
+      </ion-item>
+
+
       <ion-item class="item item-divider item-icon-right bold" ng-if="connections">
-        Nürnberg, Maxfeld => Nürnberg, Aufseßplatz
+        Nürnberg, Maxfeld > Nürnberg, Aufseßplatz
         <p>Placeholder</p>
         <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i>
       </ion-item>
 
-      <ion-item class="item-icon-left item-icon-multi" ng-repeat="connection in connections">
-        <span class="item-transport {{transport.transport}} {{transport.line}}" ng-repeat="transport in connection.transports" >
-          {{transport.line}}
-        </span>
-        <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>
-        <p>
-          {{connection.info}}
-        </p>
-      </ion-item>
+
+
+
+
+        <ion-item class="item-icon-left item-icon-multi" ng-repeat="connection in connections">
+          <span class="item-transport {{transport.transport}} {{transport.line}}" ng-repeat="transport in connection.transports" >
+            {{transport.line}}
+          </span>
+          <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>
+          <p>
+            {{connection.info}}
+          </p>
+        </ion-item>
+
+
+
 
     </ion-list>
   </ion-content>
