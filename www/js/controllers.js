@@ -98,7 +98,7 @@ angular.module('vgn.controllers', [])
      var now = new Date().getTime();
 
      for(var i in newValue) {
-       if(newValue[i].actial_time >= now) {
+       if(!newValue[i].expired) {
          valid.push(newValue[i]);
        }
 

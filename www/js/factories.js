@@ -42,10 +42,12 @@ module.factory('Departure', function($resource, $filter) {
   };
 
   Departure.prototype.time_left = function () {
-    var now = new Date().getTime()
+    var now = new Date().getTime();
     var soon = now + 300000;
-    this.expired = this.actial_time < now
+
+    this.expired = this.actial_time + 10000 <= now;
     this.about_to_expire = this.actial_time <= soon;
+
     return $filter('time')(this.actial_time)
   }
 

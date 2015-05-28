@@ -9,12 +9,10 @@
       </ion-item>
 
       <ion-item class="item-icon-left item-icon-multi" ng-repeat="connection in connections">
-        <!-- {{ connection.transports }} -->
         <span class="item-transport {{transport.transport}} {{transport.line}}" ng-repeat="transport in connection.transports" >
           {{transport.line}}
         </span>
-
-        {{connection.departure()}}-{{connection.arrival()}}
+        <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>
         <p>
           {{connection.info}}
         </p>
