@@ -11,7 +11,7 @@ var app = express();
 app.use(compression());
 app.use(express.static('www'));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -34,14 +34,14 @@ app.get("/suggestions", function (request, response) {
 
   console.log('API: ' + api_url);
 
-  http.get(api_url, function(res) {
+  http.get(api_url, function (res) {
     var chunks = [];
 
-    res.on('data', function(chunk){
+    res.on('data', function (chunk) {
       chunks.push(chunk);
     });
 
-    res.on('end', function(){
+    res.on('end', function () {
       var cities = ['Nürnberg', 'Fürth', 'Erlangen'];
       var json = JSON.parse(chunks.join('').toString());
       var suggestions = [];
@@ -138,14 +138,14 @@ function parseDeparturesHTML(html) {
 
   times.each(function(index) {
     var time_cell = $(this).text();
-    var scheduled_time = departureTime(time_cell.trim());
-    var actial_time = departureTime(time_cell.trim());
+    var scheduled_time = scheduledTime(time_cell.trim());
+    var actial_time = actualTime(time_cell.trim());
 
-    var now = new Date().getTime() + 60000;
+    var now = new Date().getTime();
     var delay = time_cell.indexOf('+') > -1 ? '+' + time_cell.split('+').pop() : 0;
     var public_transport = ['Straßenbahn', 'Stadtbus', 'U-Bahn', 'S-Bahn'];
 
-    if(actial_time > now) {
+    if(actial_time >= now) {
       var info_cell = $(transports[index]).text();
       var transport_long = info_cell.split(',').shift().trim();
       var transport_array = transport_long.split(' ');
@@ -207,44 +207,45 @@ function parseConnectionsHTML(html) {
 
 // FIXME: merge scheduledTime and actualTime together
 // handle exception cases e.g. '10:00 Halt entfällt' correctly
-function departureTime(string){
+function scheduledTime(string){
+  var date = new Date();
+
   try {
-    var date = new Date();
+    var hh = string.split(':')[0];
+    var mm = string.split(':')[1].split('+').shift();
+    mm = eval(mm);
 
-    if(string.indexOf('+') === -1){
-      var hh = string.split(':')[0];
-      var mm = string.split(':')[1];
-
-      date.setHours(hh);
-      date.setMinutes(mm);
-      date.setSeconds(0);
-
-      return date.getTime();
-
-    } else {
-      var hh = parseInt(string.split(':')[0]);
-      var mm = parseInt(string.split(':')[1].split('+').shift());
-
-      date.setHours(hh);
-      date.setMinutes(mm);
-      date.setSeconds(0);
-
-      // var delay = parseInt(string.split(':')[1].split('+').pop());
-
-      // if(mm + delay >= 60) {
-      //   hh += 1;
-      //   mm = mm + delay%60;
-      // } else {
-      //   mm = mm + delay;
-      // }
-
-      return date.getTime();
-    }
+    date.setHours(hh);
+    date.setMinutes(mm);
+    date.setSeconds(0);
   } catch(e) {
-    console.error("Error: " + e);
-
-    return '00:00'.to_timestamp();
+    console.log("Error: " + e);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
   }
+
+  return date.getTime();
+}
+
+function actualTime(string){
+  var date = new Date();
+
+  try {
+    var hh = string.split(':')[0];
+    var mm = eval(string.split(':')[1]);
+
+    date.setHours(hh);
+    date.setMinutes(mm);
+    date.setSeconds(0);
+  } catch(e) {
+    console.log("Error: " + e);
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+  }
+
+  return date.getTime();
 }
 
 // VERBINDUNGEN URL
