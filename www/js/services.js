@@ -34,6 +34,6 @@ module.factory('ionicModalService', function($ionicModal, Station) {
     reset: function() {
       this.scope.station = {};
       this.scope.suggestions = [];
-    }
+    },
   }
 });

@@ -24,34 +24,6 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
     }, 1000);
   }
 
-  $scope.search = function() {
-    $scope.departures = null;
-    ionicModalService.search();
-  }
-
-  // $scope.search = function() {
-  //   $scope.departures = null;
-
-  //   if($scope.timeout) {
-  //     clearTimeout($scope.timeout);
-  //   }
-
-  //   $scope.timeout = setTimeout(function() {
-  //     Station.query({ station: $scope.station.name}, function(suggestions) {
-  //       $scope.suggestions =  suggestions;
-  //     });
-  //   }, 500);
-  // }
-
-  $scope.clearSearch = function() {
-    $location.search({});
-    $scope.departures = $rootScope.favorite = $scope.suggestions;
-    $scope.station = {};
-    $scope.tags = [];
-
-    $rootScope.favorites = Favorite.all();
-  }
-
   $scope.addTag = function(tag) {
     if(!_.findWhere($scope.tags, tag)) {
       $scope.tags.push(tag);
@@ -112,9 +84,23 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
     }, true);
   };
 
-  // $scope.initModal = function(){
+  $scope.initModal = function(){
+    ionicModalService.init($scope)
+  }
 
-  // }
+  $scope.search = function() {
+    $scope.departures = null;
+    ionicModalService.search();
+  }
+
+  $scope.clear = function() {
+    $location.search({});
+    $scope.departures = $rootScope.favorite;
+    $scope.tags = [];
+
+    ionicModalService.reset();
+    $rootScope.favorites = Favorite.all();
+  }
 
   $scope.onSelect = function(suggestion) {
     $scope.loadDepartures(suggestion);
@@ -128,33 +114,13 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
     $scope.modal.hide();
   };
 
-
   // Init
   $scope.initClock();
-
-  // $ionicModal.fromTemplateUrl('suggestions_modal.html', {
-  //   scope: $scope,
-  //   animation: 'slide-in-up'
-  // }).then(function(modal) {
-  //   $scope.modal = modal
-
-  //   if($scope.favorite) {
-  //     // $scope.loadDepartures($scope.favorite)
-  //   } else {
-  //     // $scope.modal.show()
-  //   }
-  // })
-
-  // // Angular callbacks
-  // $scope.$on('$destroy', function() {
-  //   $scope.modal.remove();
-  // });
+  $scope.initModal();
 
   if($scope.station.id) {
     $scope.loadDepartures($scope.station);
   }
-
-  var modal = ionicModalService.init($scope)
 
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
@@ -167,6 +133,11 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ion
 
   $scope.search = function() {
     ionicModalService.search();
+  }
+
+  $scope.clear = function() {
+    console.log("clear")
+    ionicModalService.reset();
   }
 
   $scope.onSelect = function(suggestion) {
@@ -207,10 +178,7 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ion
     })
   };
 
-  $scope.initModal()
-
-  // $scope.loadConnections()
-
+  $scope.initModal();
 })
 
 module.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
