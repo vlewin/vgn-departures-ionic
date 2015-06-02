@@ -1,4 +1,4 @@
-angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
+angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.factories', 'vgn.services', 'vgn.filters'])
 
 .run(function($ionicPlatform, $rootScope, $state, $localStorage, $ionicScrollDelegate, Favorite) {
   $ionicPlatform.ready(function() {

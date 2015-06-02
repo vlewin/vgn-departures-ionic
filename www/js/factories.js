@@ -1,4 +1,4 @@
-var module = angular.module('vgn.services', [])
+var module = angular.module('vgn.factories', [])
 
 module.factory('$localStorage', function($window) {
   return {

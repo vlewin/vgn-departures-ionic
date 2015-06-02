@@ -16,7 +16,7 @@
       <ion-item class="item-input-inset">
         <label class="item-input-wrapper">
           <i class="icon ion-ios-search placeholder-icon"></i>
-          <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name">
+          <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name" autofocus />
         </label>
 
         <form name="search_form" ng-submit="clearSearch()">
@@ -27,7 +27,7 @@
       </ion-item>
 
       <div class="list no-margin no-padding" ng-if="suggestions">
-        <li class="item" ng-repeat="suggestion in suggestions" ng-click="loadDepartures(suggestion)">
+        <li class="item" ng-repeat="suggestion in suggestions" ng-click="onSelect(suggestion)">
           {{suggestion.name}}
         </li>
       </div>
