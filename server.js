@@ -97,12 +97,15 @@ app.get("/connections", function (request, response) {
   console.log("*** /connections => Incomming request");
   console.log(request.query);
 
-  var sl = 's:3000510';
-  var zl = 's:3000331';
+  // var sl = 's:3000510';
+  // var zl = 's:3000331';
 
-  var sl = 's:3000331';
-  var zl = 's:3000533';
+  // var sl = 's:3000331';
+  // var zl = 's:3000533';
   // var zl = 's:3000534';
+
+  var sl = request.query.sl;
+  var zl = request.query.zl;
 
   var today = new Date();
   var date = dateFormat(today, "yyyy-mm-dd");
