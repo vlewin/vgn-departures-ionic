@@ -205,9 +205,3 @@ module.controller('InfoCtrl', function($rootScope, $scope) {
   }
 })
 
-module.controller('SettingsCtrl', function($rootScope, $scope, $localStorage) {
-  $scope.save = function() {
-    $rootScope.api_url = $scope.api_url;
-    $localStorage.set('api_url', $scope.api_url);
-  }
-});
