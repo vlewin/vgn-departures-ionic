@@ -6,24 +6,6 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   $scope.departures_cache = null;
   $scope.station = $state.params;
 
-  // $scope.now = function(format) {
-  //   var format = format ? format : 'HH:mm:ss';
-  //   return $filter('date')(new Date(), format)
-  // }
-
-  // $scope.updateClock = function() {
-  //   $scope.time = $scope.now('HH:mm');
-  // };
-
-  // $scope.initClock = function() {
-  //   $scope.date = $filter('date')(new Date(),'dd.MM.yy');
-  //   $scope.time = $scope.now('HH:mm');
-
-  //   var timer = setInterval(function() {
-  //     $scope.$apply($scope.updateClock);
-  //   }, 1000);
-  // }
-
   $scope.addTag = function(tag) {
     if(!_.findWhere($scope.tags, tag)) {
       $scope.tags.push(tag);
@@ -136,15 +118,10 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ion
   }
 
   $scope.clear = function() {
-    console.log("clear")
     ionicModalService.reset();
   }
 
   $scope.onSelect = function(suggestion) {
-    console.log(suggestion);
-    console.log($scope.model)
-
-
     if($scope.model === 'sl') {
       $scope.sl = suggestion;
     } else {
