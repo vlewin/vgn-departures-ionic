@@ -46,6 +46,11 @@ ion-pane:first-of-type {
   top: 16px;
 }
 
+.badge-grey {
+  background-color: #777;
+  color: #fff;
+}
+
 .grey {
   /*background-color: #777;*/
   color: #777;
@@ -65,6 +70,14 @@ ion-pane:first-of-type {
 
 .no-padding {
   padding: 0 !important;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .spinner svg {
@@ -152,6 +165,8 @@ input#search {
   border-radius: 0;
 }
 
+.item-multi { margin: 0px 0px 0px 5px; overflow: visible; }
+
 .item-transport {
   color: white;
   height: 100%;
@@ -166,7 +181,18 @@ input#search {
   cursor: pointer;
 }
 
-.Stadtbus, .S-Bahn {
+.item-transport-small {
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  width: 24px;
+  margin: 0 2px;
+}
+
+.Stadtbus, .S-Bahn, .R-Bahn {
   border-radius: 50%;
 }
 
@@ -180,6 +206,10 @@ input#search {
 
 .S-Bahn {
   background-color: #4AB15C;
+}
+
+.R-Bahn {
+  background-color: #079063;
 }
 
 .U1 {
@@ -200,6 +230,14 @@ input#search {
 
 .U3 {
   background-color: #25B7BC
+}
+
+.Fussweg {
+  background-image: url('../img/Fuss.png');
+  background-color: #f0f0f0;
+  background-position-x: 0px;
+  background-position-y: 20px, -20px;
+  background-size: 100%,  80%;
 }
 
 /* CSS3 Animations */

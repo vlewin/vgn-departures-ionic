@@ -1,2 +1,5 @@
 .git/**/*
 newrelic_agent.log
+
+www/**/*
+
