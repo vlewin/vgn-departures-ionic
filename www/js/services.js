@@ -32,6 +32,8 @@ module.factory('ionicModalService', function($ionicModal, Station) {
     },
 
     reset: function() {
+      // console.log(this.scope)
+      // console.log(this.scope.station)
       this.scope.station = {};
       this.scope.suggestions = [];
     },
