@@ -1,51 +1,10 @@
-angular.module('vgn.controllers', [])
+var module = angular.module('vgn.controllers', [])
 
-.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $filter, $state, $location, $ionicLoading, $ionicModal, $ionicPopover,
+module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $filter, $state, $location, ionicModalService, $ionicLoading,
                                        Station, Departure, Favorite) {
   $scope.tags = [];
   $scope.departures_cache = null;
   $scope.station = $state.params;
-
-  $scope.now = function(format) {
-    var format = format ? format : 'HH:mm:ss';
-    return $filter('date')(new Date(), format)
-  }
-
-  $scope.updateClock = function() {
-    $scope.time = $scope.now('HH:mm');
-  };
-
-  $scope.initClock = function() {
-    $scope.date = $filter('date')(new Date(),'dd.MM.yy');
-    $scope.time = $scope.now('HH:mm');
-
-    var timer = setInterval(function() {
-      $scope.$apply($scope.updateClock);
-    }, 1000);
-  }
-
-  $scope.search = function() {
-    $scope.departures = null;
-
-    if($scope.timeout) {
-      clearTimeout($scope.timeout);
-    }
-
-    $scope.timeout = setTimeout(function() {
-      Station.query({ station: $scope.station.name}, function(suggestions) {
-        $scope.suggestions =  suggestions;
-      });
-    }, 500);
-  }
-
-  $scope.clearSearch = function() {
-    $location.search({});
-    $scope.departures = $rootScope.favorite = $scope.suggestions;
-    $scope.station = {};
-    $scope.tags = [];
-
-    $rootScope.favorites = Favorite.all();
-  }
 
   $scope.addTag = function(tag) {
     if(!_.findWhere($scope.tags, tag)) {
@@ -98,7 +57,7 @@ angular.module('vgn.controllers', [])
      var now = new Date().getTime();
 
      for(var i in newValue) {
-       if(newValue[i].actial_time >= now) {
+       if(!newValue[i].expired) {
          valid.push(newValue[i]);
        }
 
@@ -108,7 +67,25 @@ angular.module('vgn.controllers', [])
   };
 
   $scope.initModal = function(){
+    ionicModalService.init($scope)
+  }
 
+  $scope.search = function() {
+    $scope.departures = null;
+    ionicModalService.search();
+  }
+
+  $scope.clear = function() {
+    $location.search({});
+    $scope.departures = $rootScope.favorite;
+    $scope.tags = [];
+
+    ionicModalService.reset();
+    $rootScope.favorites = Favorite.all();
+  }
+
+  $scope.onSelect = function(suggestion) {
+    $scope.loadDepartures(suggestion);
   }
 
   $scope.openModal = function() {
@@ -119,27 +96,9 @@ angular.module('vgn.controllers', [])
     $scope.modal.hide();
   };
 
-
   // Init
-  $scope.initClock();
-
-  $ionicModal.fromTemplateUrl('suggestions_modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal
-
-    if($scope.favorite) {
-      // $scope.loadDepartures($scope.favorite)
-    } else {
-      // $scope.modal.show()
-    }
-  })
-
-  // Angular callbacks
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
+  $rootScope.initClock();
+  $scope.initModal();
 
   if($scope.station.id) {
     $scope.loadDepartures($scope.station);
@@ -148,11 +107,59 @@ angular.module('vgn.controllers', [])
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
 
-.controller('ConnectionsCtrl', function($rootScope, $scope, $resource) {
+module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ionicModalService, Connection) {
+  $scope.station = {};
+  $scope.target = null;
+  $scope.sl = null; // id:2, name: "Nürnberg, Aufseßplatz"
+  $scope.zl = null;
 
+  $scope.search = function() {
+    ionicModalService.search();
+  }
+
+  $scope.clear = function() {
+    ionicModalService.reset();
+  }
+
+  $scope.onSelect = function(suggestion) {
+    if($scope.model === 'sl') {
+      $scope.sl = suggestion;
+    } else {
+      $scope.zl = suggestion;
+    }
+
+    ionicModalService.reset();
+    $scope.closeModal();
+
+    if($scope.sl && $scope.zl) {
+      $scope.loadConnections($scope.sl, $scope.zl);
+    }
+  }
+
+  $scope.initModal = function(){
+    ionicModalService.init($scope)
+  }
+
+  $scope.openModal = function(model) {
+    $scope.model = model;
+    $scope.modal.show()
+  }
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.loadConnections = function(sl, zl) {
+    Connection.query({ sl: sl.id, zl: zl.id }, function(connections) {
+      $scope.connections = connections;
+    })
+  };
+
+  $rootScope.initClock();
+  $scope.initModal();
 })
 
-.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
+module.controller('FavoritesCtrl', function($rootScope, $scope, $localStorage, $state, Favorite) {
   $rootScope.favorites = Favorite.all();
   $scope.editMode = false;
 
@@ -185,7 +192,7 @@ angular.module('vgn.controllers', [])
   }
 })
 
-.controller('InfoCtrl', function($rootScope, $scope) {
+module.controller('InfoCtrl', function($rootScope, $scope) {
   $scope.supportedPlatform = function(){
     var platforms = ['iPhone', 'iPad', 'Android']
     var standalone = window.navigator.standalone
@@ -198,9 +205,3 @@ angular.module('vgn.controllers', [])
   }
 })
 
-.controller('SettingsCtrl', function($rootScope, $scope, $localStorage) {
-  $scope.save = function() {
-    $rootScope.api_url = $scope.api_url;
-    $localStorage.set('api_url', $scope.api_url);
-  }
-});

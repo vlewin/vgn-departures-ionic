@@ -1,6 +1,6 @@
-angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.services', 'vgn.filters'])
+angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'vgn.factories', 'vgn.services', 'vgn.filters'])
 
-.run(function($ionicPlatform, $rootScope, $state, $localStorage, $ionicScrollDelegate, Favorite) {
+.run(function($ionicPlatform, $rootScope, $state, $filter, $localStorage, $ionicScrollDelegate, Favorite) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -12,6 +12,24 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
       StatusBar.styleLightContent();
     }
   })
+
+  $rootScope.now = function(format) {
+    var format = format ? format : 'HH:mm:ss';
+    return $filter('date')(new Date(), format)
+  }
+
+  $rootScope.updateClock = function() {
+    $rootScope.time = $rootScope.now('HH:mm');
+  };
+
+  $rootScope.initClock = function() {
+    $rootScope.date = $filter('date')(new Date(),'dd.MM.yy');
+    $rootScope.time = $rootScope.now('HH:mm');
+
+    var timer = setInterval(function() {
+      $rootScope.$apply($rootScope.updateClock);
+    }, 1000);
+  }
 
   $rootScope.showAddToHomePopup = function() {
     $rootScope.ath_popup = addToHomescreen({
@@ -68,6 +86,16 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
       'tab-departures': {
         templateUrl: 'tab-departures.html',
         controller: 'DeparturesCtrl'
+      }
+    }
+  })
+
+  .state('tab.connections', {
+    url: '/connections',
+    views: {
+      'tab-connections': {
+        templateUrl: 'tab-connections.html',
+        controller: 'ConnectionsCtrl'
       }
     }
   })

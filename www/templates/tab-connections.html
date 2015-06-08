@@ -1,0 +1,46 @@
+<ion-view view-title="Connections">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item item-divider item-icon-left">
+        <i class="icon ion-clock"></i>
+        Nürnberg
+        <p>{{ date }} {{ time }}</p>
+        <!-- <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i> -->
+      </ion-item>
+
+      <div class="list no-margin no-padding">
+
+        <label class="item item-input">
+          <i class="icon ion-log-in placeholder-icon"></i>
+          <input id="search" type="search" placeholder="From" ng-click="openModal('sl')" ng-value="sl.id" ng-model="sl.name" />
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-log-out placeholder-icon"></i>
+          <input id="search" type="search" placeholder="To" ng-click="openModal('zl')" ng-value="zl.id" ng-model="zl.name" />
+        </label>
+
+        <ion-item class="item item-divider">
+          <!-- <i class="icon ion-ios-navigate-outline"></i> -->
+          Connections
+          <!-- <p>{{ date }} {{ time }}</p> -->
+          <!-- <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i> -->
+        </ion-item>
+
+        <ion-item class="item" ng-repeat="connection in connections">
+          <div class="row no-padding">
+            <div class="col col-50 no-padding">
+              <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>
+            </div>
+            <div class="col col-50 no-padding text-right">
+              <span class="item-multi item-transport-small {{transport.transport}} {{transport.line}} {{'n' + connection.transports.length}}" ng-repeat="transport in connection.transports" >
+                {{transport.line}}
+              </span>
+            </div>
+          </div>
+
+          <p>{{connection.info}}</p>
+        </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

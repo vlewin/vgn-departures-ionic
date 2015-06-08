@@ -1,4 +1,4 @@
-var module = angular.module('vgn.services', [])
+var module = angular.module('vgn.factories', [])
 
 module.factory('$localStorage', function($window) {
   return {
@@ -18,12 +18,13 @@ module.factory('$localStorage', function($window) {
 });
 
 var API = 'http://vgn.herokuapp.com';
+var API = 'http://localhost:3001';
 
-module.factory('Station', function($rootScope, $resource) {
+module.factory('Station', function($resource) {
   return $resource(API + '/suggestions/:id');
 })
 
-module.factory('Departure', function($rootScope, $resource, $filter) {
+module.factory('Departure', function($resource, $filter) {
   var Departure = $resource(API + '/departures/:id');
   function Departure(data) {
       for (attr in data) {
@@ -41,17 +42,33 @@ module.factory('Departure', function($rootScope, $resource, $filter) {
   };
 
   Departure.prototype.time_left = function () {
-    var now = new Date().getTime()
+    var now = new Date().getTime();
     var soon = now + 300000;
-    this.expired = this.actial_time < now
+
+    this.expired = this.actial_time + 10000 <= now;
     this.about_to_expire = this.actial_time <= soon;
+
     return $filter('time')(this.actial_time)
   }
 
   return Departure;
 })
 
-module.factory('Favorite', function($rootScope, $resource, $localStorage) {
+module.factory('Connection', function($resource, $filter) {
+  var Connection = $resource(API + '/connections/:id');
+
+  Connection.prototype.departure = function() {
+    return $filter('date')(new Date(this.start),'HH:mm');
+  };
+
+  Connection.prototype.arrival = function() {
+    return $filter('date')(new Date(this.end),'HH:mm');
+  };
+
+  return Connection;
+})
+
+module.factory('Favorite', function($resource, $localStorage) {
   function Favorite(data) {
       for (attr in data) {
           if (data.hasOwnProperty(attr)) {
