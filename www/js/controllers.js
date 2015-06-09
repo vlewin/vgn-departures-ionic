@@ -77,10 +77,10 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
 
   $scope.clear = function() {
     $location.search({});
-    $scope.departures = $rootScope.favorite;
-    $scope.tags = [];
-
     ionicModalService.reset();
+
+    $scope.departures = null;
+    $scope.tags = [];
     $rootScope.favorites = Favorite.all();
   }
 

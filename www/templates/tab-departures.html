@@ -31,9 +31,7 @@
         {{favorite.name}}
       </li>
     </div>
-
     <ion-item class="item item-divider item-icon-right bold" ng-if="departures" ng-click="favorite ? removeFavorite(station) : addFavorite(station)">
-      <!-- <i class="icon ion-clock"></i> -->
       {{ station.name }}
       <p>{{ date }} {{ time }}</p>
       <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i>
