@@ -6,7 +6,6 @@
           <i class="icon ion-clock"></i>
           Nürnberg
           <p>{{ date }} {{ time }}</p>
-          <!-- <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i> -->
         </ion-item>
 
         <ion-item class="item item-input padding" placeholder="From" ng-click="openModal('sl')" ng-value="sl.id" ng-model="sl.name">
@@ -22,12 +21,8 @@
         </ion-item>
       </div>
 
-      <div class="card" ng-if="connections">
-<!--         <ion-item class="item item-divider">
-          Connections
-        </ion-item> -->
-
-        <ion-item class="item" ng-repeat="connection in connections">
+      <div class="list" ng-if="connections">
+        <ion-item class="item list-inset" ng-repeat="connection in connections">
           <div class="row no-padding">
             <div class="col col-50 no-padding">
               <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>

@@ -110,16 +110,16 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
 module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $timeout, ionicModalService, Connection) {
   $scope.station = {};
   $scope.target = null;
-  $scope.sl = null; // id:2, name: "Nürnberg, Aufseßplatz"
+  $scope.sl = null;
   $scope.zl = null;
 
 $scope.sl = {"name": "Nürnberg, Maxfeld",
 "type": "Haltestelle",
 "id": "s:3000331"}
 
-$scope.zl = {"name": "Nürnberg, Aufseßplatz",
+$scope.zl = {"name": "Nürnberg, Reichelsdorfer Hauptstr.",
 "type": "Haltestelle",
-"id": "s:3000534"}
+"id": "s:3001940"},
 
   $scope.search = function() {
     ionicModalService.search();
