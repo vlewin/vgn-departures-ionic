@@ -101,6 +101,26 @@ input#search {
   margin-left: 0px;
 }
 
+.icon-swap {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  color: #666;
+  font-size: 20px;
+  font-weight: 700;
+  height: 32px;
+  margin-top: -16px;
+  padding: 5px;
+  position: absolute;
+  right: 10px;
+  text-align: center;
+  transform: rotate(90deg);
+  vertical-align: middle;
+  width: 32px;
+  z-index: 100;
+  cursor: pointer;
+}
+
 .tags{
 	/*margin: 5px 15px;*/
   padding: 5px 15px;

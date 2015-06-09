@@ -1,30 +1,31 @@
 <ion-view view-title="Connections">
   <ion-content>
     <ion-list>
-      <ion-item class="item item-divider item-icon-left">
-        <i class="icon ion-clock"></i>
-        Nürnberg
-        <p>{{ date }} {{ time }}</p>
-        <!-- <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i> -->
-      </ion-item>
-
-      <div class="list no-margin no-padding">
-
-        <label class="item item-input">
-          <i class="icon ion-log-in placeholder-icon"></i>
-          <input id="search" type="search" placeholder="From" ng-click="openModal('sl')" ng-value="sl.id" ng-model="sl.name" />
-        </label>
-        <label class="item item-input">
-          <i class="icon ion-log-out placeholder-icon"></i>
-          <input id="search" type="search" placeholder="To" ng-click="openModal('zl')" ng-value="zl.id" ng-model="zl.name" />
-        </label>
-
-        <ion-item class="item item-divider">
-          <!-- <i class="icon ion-ios-navigate-outline"></i> -->
-          Connections
-          <!-- <p>{{ date }} {{ time }}</p> -->
+      <div class="">
+        <ion-item class="item item-divider item-icon-left">
+          <i class="icon ion-clock"></i>
+          Nürnberg
+          <p>{{ date }} {{ time }}</p>
           <!-- <i class="icon ion-star {{ favorite? 'energized' : 'grey'}}"></i> -->
         </ion-item>
+
+        <ion-item class="item item-input padding" placeholder="From" ng-click="openModal('sl')" ng-value="sl.id" ng-model="sl.name">
+          <i class="icon ion-log-in placeholder-icon"></i>
+          {{sl.name}}
+        </ion-item>
+
+        <i class="icon icon-swap ion-arrow-swap" ng-click="swap()"></i>
+
+        <ion-item class="item item-input padding" placeholder="From" ng-click="openModal('zl')" ng-value="zl.id" ng-model="zl.name">
+          <i class="icon ion-log-out placeholder-icon"></i>
+          {{zl.name}}
+        </ion-item>
+      </div>
+
+      <div class="card" ng-if="connections">
+<!--         <ion-item class="item item-divider">
+          Connections
+        </ion-item> -->
 
         <ion-item class="item" ng-repeat="connection in connections">
           <div class="row no-padding">
@@ -40,6 +41,7 @@
 
           <p>{{connection.info}}</p>
         </ion-item>
+      </div>
 
     </ion-list>
   </ion-content>

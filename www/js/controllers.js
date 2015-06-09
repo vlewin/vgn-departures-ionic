@@ -107,11 +107,19 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   // $scope.loadDepartures({ id: 's:3000503', name: 'Nürnberg, Maxfeld' })
 })
 
-module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ionicModalService, Connection) {
+module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $timeout, ionicModalService, Connection) {
   $scope.station = {};
   $scope.target = null;
   $scope.sl = null; // id:2, name: "Nürnberg, Aufseßplatz"
   $scope.zl = null;
+
+$scope.sl = {"name": "Nürnberg, Maxfeld",
+"type": "Haltestelle",
+"id": "s:3000331"}
+
+$scope.zl = {"name": "Nürnberg, Aufseßplatz",
+"type": "Haltestelle",
+"id": "s:3000534"}
 
   $scope.search = function() {
     ionicModalService.search();
@@ -142,12 +150,23 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, ion
 
   $scope.openModal = function(model) {
     $scope.model = model;
-    $scope.modal.show()
+    $scope.modal.show();
   }
 
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
+
+
+  $scope.swap = function() {
+    var tmp = $scope.sl;
+    $scope.sl = $scope.zl;
+    $scope.zl = tmp;
+
+    if($scope.sl && $scope.zl) {
+      $scope.loadConnections($scope.sl, $scope.zl);
+    }
+  }
 
   $scope.loadConnections = function(sl, zl) {
     Connection.query({ sl: sl.id, zl: zl.id }, function(connections) {
