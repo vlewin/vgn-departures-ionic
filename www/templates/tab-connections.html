@@ -28,7 +28,7 @@
               <b class="bold">{{connection.departure()}}-{{connection.arrival()}}</b>
             </div>
             <div class="col col-50 no-padding text-right">
-              <span class="item-multi item-transport-small {{transport.transport}} {{transport.line}} {{'n' + connection.transports.length}}" ng-repeat="transport in connection.transports" >
+              <span class="item-multi item-transport-small {{transport.transport}} {{transport.line}}" ng-repeat="transport in connection.transports" >
                 {{transport.line}}
               </span>
             </div>
@@ -36,6 +36,12 @@
 
           <p>{{connection.info}}</p>
         </ion-item>
+      </div>
+
+      <div class="button-bar padding" ng-if="connections.length">
+        <a class="button" ng-click="loadMore()">
+          Load more ...
+        </a>
       </div>
 
     </ion-list>

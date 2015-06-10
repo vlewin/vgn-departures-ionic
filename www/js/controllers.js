@@ -108,18 +108,14 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
 })
 
 module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $timeout, $ionicLoading, ionicModalService, Connection) {
+  $scope.connections = [];
   $scope.station = {};
   $scope.target = null;
   $scope.sl = null;
   $scope.zl = null;
 
-$scope.sl = {"name": "Nürnberg, Maxfeld",
-"type": "Haltestelle",
-"id": "s:3000331"}
-
-$scope.zl = {"name": "Nürnberg, Reichelsdorfer Hauptstr.",
-"type": "Haltestelle",
-"id": "s:3001940"},
+  $scope.sl = {"name":"Nürnberg, Hauptbahnhof","type":"Haltestelle","id":"s:3000510"};
+  $scope.zl = {"name":"Fürth, Hardhöhe","type":"Haltestelle","id":"s:3002390"};
 
   $scope.search = function() {
     ionicModalService.search();
@@ -140,6 +136,7 @@ $scope.zl = {"name": "Nürnberg, Reichelsdorfer Hauptstr.",
     $scope.closeModal();
 
     if($scope.sl && $scope.zl) {
+      $scope.connections = [];
       $scope.loadConnections($scope.sl, $scope.zl);
     }
   }
@@ -163,20 +160,30 @@ $scope.zl = {"name": "Nürnberg, Reichelsdorfer Hauptstr.",
     $scope.zl = tmp;
 
     if($scope.sl && $scope.zl) {
+      $scope.connections = [];
       $scope.loadConnections($scope.sl, $scope.zl);
     }
   }
 
-  $scope.loadConnections = function(sl, zl) {
+  $scope.loadConnections = function(sl, zl, timestamp) {
     $ionicLoading.show({
       template: '<ion-spinner class="spinner spinner-positive" icon="ripple"></ion-spinner>',
       hideOnStageChange: false
     });
 
-    Connection.query({ sl: sl.id, zl: zl.id }, function(connections) {
-      $scope.connections = connections;
+    Connection.query({ sl: sl.id, zl: zl.id, timestamp }, function(connections) {
+      var tmp = $scope.connections.concat(connections);
+      $scope.connections = _.uniq(tmp, false, function(c){ return c.start + c.end + c.transports; })
+
       $ionicLoading.hide();
     })
+  };
+
+  $scope.loadMore= function() {
+    if($scope.sl && $scope.zl) {
+      var timestamp = _.last($scope.connections).start;
+      $scope.loadConnections($scope.sl, $scope.zl, timestamp);
+    }
   };
 
   $rootScope.initClock();
