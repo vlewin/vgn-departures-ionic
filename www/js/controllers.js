@@ -71,6 +71,7 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   }
 
   $scope.search = function() {
+    $scope.station = {};
     $scope.departures = null;
     ionicModalService.search();
   }
