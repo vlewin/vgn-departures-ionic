@@ -71,7 +71,6 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   }
 
   $scope.search = function() {
-    $scope.station = {};
     $scope.departures = null;
     ionicModalService.search();
   }
@@ -90,6 +89,7 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   }
 
   $scope.openModal = function() {
+    $scope.station = {};
     $scope.modal.show()
   }
 
