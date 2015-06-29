@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "vgn-departures: VGN Nürnberg live transport arrivals built with awesome Ionic framework",
   "main": "server.js",
+  "repository": "https://github.com/vlewin/vgn-departures-ionic",
   "scripts": {
     "start": "node server.js"
   },
@@ -12,21 +13,21 @@
     "dateformat": "^1.0.11",
     "express": "^4.12.3",
     "forever": ">= 0.14.1",
-    "gulp": "^3.5.6",
-    "gulp-concat": "^2.2.0",
-    "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-sass": "^1.3.3",
     "newrelic": "^1.19.0"
   },
   "devDependencies": {
     "async": "^0.9.0",
-    "bower": "^1.3.3",
-    "gulp-angular-templatecache": "^1.6.0",
+    "bower": "^1.4.1",
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.7.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^0.3.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^1.3.3",
     "gulp-tap": "^0.1.3",
-    "gulp-util": "^2.2.14",
+    "gulp-util": "^3.0.6",
     "jshint": "^2.7.0",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.5.1"
   },
   "engine": "node 0.10.32",
   "cordovaPlugins": [
