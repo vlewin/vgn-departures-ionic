@@ -67,7 +67,7 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
   };
 
   $scope.initModal = function(){
-    ionicModalService.init($scope)
+    ionicModalService.init($scope, 'Station')
   }
 
   $scope.search = function() {
@@ -143,7 +143,7 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $ti
   }
 
   $scope.initModal = function(){
-    ionicModalService.init($scope)
+    ionicModalService.init($scope, 'Station');
   }
 
   $scope.openModal = function(model) {

@@ -4,11 +4,13 @@ module.factory('ionicModalService', function($ionicModal, Station) {
   var scope = null;
   return {
 
-    init: function(scope) {
+    init: function(scope, title) {
       this.scope = scope;
+      title = title ?  title : 'Search'
 
       $ionicModal.fromTemplateUrl('suggestions_modal.html', {
         scope: scope,
+        title: title,
         animation: 'slide-in-up'
       }).then(function(modal) {
         scope.modal = modal
