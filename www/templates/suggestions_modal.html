@@ -20,6 +20,17 @@
         </form>
       </ion-item>
 
+      <ion-item class="item-divider" ng-if="!suggestions && suggestions_favorites.length">
+        Favorites
+      </ion-item>
+
+      <div class="list no-margin no-padding" ng-if="!suggestions && suggestions_favorites.length">
+        <li class="item" ng-repeat="favorite in suggestions_favorites" ng-click="onSelect(favorite)">
+          <i class= "icon ion-star energized"></i>
+          {{favorite.name}}
+        </li>
+      </div>
+
       <div class="list no-margin no-padding" ng-if="suggestions">
         <li class="item" ng-repeat="suggestion in suggestions" ng-click="onSelect(suggestion)">
           {{suggestion.name}}

@@ -53,3 +53,10 @@ module.filter('minutes', function() {
     return Math.round((departure_time-now)/60000) + ' minute(s) left'
   }
 });
+
+module.filter('debug', function() {
+  return function(input) {
+    if (input === '') return 'empty string';
+    return input ? input : ('' + input);
+  };
+});

@@ -117,6 +117,7 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $ti
 
   $scope.sl = {"name":"Nürnberg, Hauptbahnhof","type":"Haltestelle","id":"s:3000510"};
   $scope.zl = {"name":"Fürth, Hardhöhe","type":"Haltestelle","id":"s:3002390"};
+  $scope.suggestions_favorites = _.difference($scope.favorites, [$scope.sl, $scope.zl])
 
   $scope.search = function() {
     ionicModalService.search();
@@ -124,6 +125,10 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $ti
 
   $scope.clear = function() {
     ionicModalService.reset();
+  }
+
+  $scope.favoriteToStation = function(favorite) {
+    $scope.station = favorite;
   }
 
   $scope.onSelect = function(suggestion) {
@@ -135,9 +140,11 @@ module.controller('ConnectionsCtrl', function($rootScope, $scope, $resource, $ti
 
     ionicModalService.reset();
     $scope.closeModal();
+    $scope.suggestions = null;
 
     if($scope.sl && $scope.zl) {
       $scope.connections = [];
+      $scope.suggestions_favorites = _.difference($scope.favorites, [$scope.sl, $scope.zl])
       $scope.loadConnections($scope.sl, $scope.zl);
     }
   }
