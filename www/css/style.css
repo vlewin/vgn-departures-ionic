@@ -255,9 +255,8 @@ input#search {
 .Fussweg {
   background-image: url('../img/Fuss.png');
   background-color: #f0f0f0;
-  background-position-x: 0px;
-  background-position-y: 20px, -20px;
   background-size: 100%,  80%;
+  margin: -8px 5px;
 }
 
 /* CSS3 Animations */
