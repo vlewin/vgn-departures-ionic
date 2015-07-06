@@ -1,14 +1,8 @@
 <div class="modal">
   <header class="bar bar-header bar-positive">
-    <h1 class="title">Search</h1>
+    <h1 class="title">{{ title }}</h1>
     <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-ios-close-outline"></span></div>
   </header>
-
-<!--   <ion-nav-button side="right">
-    <button class="button button-clear" ng-click="openModal()">
-      <i class="icon ion-search"></i>
-    </button>
-  </ion-nav-button> -->
 
   <ion-view>
     <ion-content class="has-header">
@@ -16,7 +10,7 @@
       <ion-item class="item-input-inset">
         <label class="item-input-wrapper">
           <i class="icon ion-ios-search placeholder-icon"></i>
-          <input id="search" type="search" placeholder="Search" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name" autofocus />
+          <input id="search" type="search" placeholder="{{modal.title}}" ng-change="search()" ng-focus="scrollTop()" ng-value="station.id" ng-model="station.name" autofocus />
         </label>
 
         <form name="search_form" ng-submit="clearSearch()">
@@ -25,6 +19,17 @@
           </button>
         </form>
       </ion-item>
+
+      <ion-item class="item-divider" ng-if="!suggestions && suggestions_favorites.length">
+        Favorites
+      </ion-item>
+
+      <div class="list no-margin no-padding" ng-if="!suggestions && suggestions_favorites.length">
+        <li class="item" ng-repeat="favorite in suggestions_favorites" ng-click="onSelect(favorite)">
+          <i class= "icon ion-star energized"></i>
+          {{favorite.name}}
+        </li>
+      </div>
 
       <div class="list no-margin no-padding" ng-if="suggestions">
         <li class="item" ng-repeat="suggestion in suggestions" ng-click="onSelect(suggestion)">
