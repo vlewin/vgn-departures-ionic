@@ -11,12 +11,12 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
-  })
+  });
 
   $rootScope.now = function(format) {
-    var format = format ? format : 'HH:mm:ss';
-    return $filter('date')(new Date(), format)
-  }
+    format = format ? format : 'HH:mm:ss';
+    return $filter('date')(new Date(), format);
+  };
 
   $rootScope.updateClock = function() {
     $rootScope.time = $rootScope.now('HH:mm');
@@ -29,7 +29,7 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
     var timer = setInterval(function() {
       $rootScope.$apply($rootScope.updateClock);
     }, 1000);
-  }
+  };
 
   $rootScope.showAddToHomePopup = function() {
     $rootScope.ath_popup = addToHomescreen({
@@ -41,34 +41,34 @@ angular.module('vgn', ['ionic', 'ngResource', 'templates', 'vgn.controllers', 'v
       privateModeOverride: true,  // show the message in private mode
       maxDisplayCount: 2          // do not obey the max display count
     });
-  }
+  };
 
   $rootScope.scrollTop = function() {
-    $ionicScrollDelegate.scrollTop(true)
+    $ionicScrollDelegate.scrollTop(true);
   };
 
 
   $rootScope.isFavorite = function(station) {
-    $rootScope.favorite = Favorite.exist(station)
-  }
+    $rootScope.favorite = Favorite.exist(station);
+  };
 
   $rootScope.addFavorite = function(station) {
     Favorite.push(station);
     $rootScope.favorite = Favorite.exist(station);
     $rootScope.favorites = Favorite.all();
-  }
+  };
 
   $rootScope.removeFavorite = function(station) {
     Favorite.remove(station);
 
     $rootScope.favorite = null;
     $rootScope.favorites = Favorite.all();
-  }
+  };
 
   $rootScope.favorites = Favorite.all();
   $rootScope.favorite = Favorite.last();
 
-  $rootScope.showAddToHomePopup()
+  $rootScope.showAddToHomePopup();
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

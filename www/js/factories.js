@@ -22,12 +22,12 @@ var API = 'http://vgn.herokuapp.com';
 
 module.factory('Station', function($resource) {
   return $resource(API + '/suggestions/:id');
-})
+});
 
 module.factory('Departure', function($resource, $filter) {
   var Departure = $resource(API + '/departures/:id');
   function Departure(data) {
-      for (attr in data) {
+      for(var attr in data) {
           if (data.hasOwnProperty(attr)) {
               this[attr] = data[attr];
           }
@@ -42,17 +42,17 @@ module.factory('Departure', function($resource, $filter) {
   };
 
   Departure.prototype.time_left = function () {
-    var now = new Date().getTime();
+    var now = Date.now();
     var soon = now + 300000;
 
     this.expired = this.actial_time + 10000 <= now;
     this.about_to_expire = this.actial_time <= soon;
 
-    return $filter('time')(this.actial_time)
-  }
+    return $filter('time')(this.actial_time);
+  };
 
   return Departure;
-})
+});
 
 module.factory('Connection', function($resource, $filter) {
   var Connection = $resource(API + '/connections/:id');
@@ -66,11 +66,11 @@ module.factory('Connection', function($resource, $filter) {
   };
 
   return Connection;
-})
+});
 
 module.factory('Favorite', function($resource, $localStorage) {
   function Favorite(data) {
-      for (attr in data) {
+      for (var attr in data) {
           if (data.hasOwnProperty(attr)) {
               this[attr] = data[attr];
           }
@@ -83,8 +83,8 @@ module.factory('Favorite', function($resource, $localStorage) {
 
   Favorite.exist = function(favorite) {
     if(favorite) {
-      var f = _.find(this.all(), function(f){ return f.id == favorite.id})
-      return f ? true : false
+      var f = _.find(this.all(), function(f){ return f.id == favorite.id});
+      return f ? true : false;
     } else {
       return false;
     }
@@ -92,9 +92,8 @@ module.factory('Favorite', function($resource, $localStorage) {
 
   Favorite.remove = function(favorite) {
     var favorites = this.all();
-
     favorites = _.reject(favorites, function(f){ return f.id == favorite.id });
-    $localStorage.setObject('favorites', favorites)
+    $localStorage.setObject('favorites', favorites);
 
     return favorites;
   };
@@ -107,7 +106,7 @@ module.factory('Favorite', function($resource, $localStorage) {
     } else {
       if(!_.find(favorites, function(f){ return f.id == favorite.id})) {
         favorites.push(favorite);
-        $localStorage.setObject('favorites', favorites)
+        $localStorage.setObject('favorites', favorites);
       }
     }
 
@@ -115,7 +114,7 @@ module.factory('Favorite', function($resource, $localStorage) {
   };
 
   Favorite.all = function() {
-    var favorites = $localStorage.getObject('favorites')
+    var favorites = $localStorage.getObject('favorites');
     if(favorites.length) {
       return favorites;
     } else {
@@ -124,4 +123,4 @@ module.factory('Favorite', function($resource, $localStorage) {
   };
 
   return Favorite;
-})
+});

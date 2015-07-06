@@ -50,11 +50,11 @@ module.controller('DeparturesCtrl', function($rootScope, $scope, $resource, $fil
       $ionicLoading.hide();
 
       $scope.$broadcast('scroll.refreshComplete');
-    })
+    });
 
     $scope.$watch('departures', function (newValue, oldValue, scope) {
      var valid = [];
-     var now = new Date().getTime();
+     var now = Date.now();
 
      for(var i in newValue) {
        if(!newValue[i].expired) {
