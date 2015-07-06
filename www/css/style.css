@@ -102,23 +102,25 @@ input#search {
 }
 
 @keyframes example {
-  from {
+  /*from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(270deg);
-  }
+  }*/
 
   0%   {
     background-color: #eee;
   }
   25%  {
+    transform: rotate(0deg);
     background-color: #ddd;
   }
   50%  {
     background-color: #ddd;
   }
   100% {
+    transform: rotate(270deg);
     background-color: #eee;
   }
 }
@@ -142,8 +144,6 @@ input#search {
   z-index: 100;
   cursor: pointer;
 }
-
-
 
 .icon-swap.active {
   background-color: #eee;
